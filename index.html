@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Landing Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      max-width: 900px;
+      width: 92%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0 0 0.75rem;
+      color: #3b73d9;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .button {
+      background-color: #3b73d9;
+      color: white;
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #295bb3;
+      transform: scale(1.05);
+    }
+
+    .info-section {
+      margin-top: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .info-section h2 {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      color: #222;
+    }
+
+    .info-section p {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .feature-box {
+      background: #f8faff;
+      border: 1px solid #e3ebff;
+      border-radius: 16px;
+      padding: 1.25rem;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(59, 115, 217, 0.08);
+    }
+
+    .feature-box h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: #3b73d9;
+    }
+
+    .feature-box p {
+      margin: 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      padding: 20px;
+      text-align: center;
+      background-color: #3b73d9;
+      color: white;
+      border-radius: 16px;
+    }
+
+    .footer p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    .contact-section {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #f8faff;
+  border: 1px solid #e3ebff;
+  border-radius: 16px;
+  text-align: left;
+}
+
+.contact-section h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #3b73d9;
+  text-align: center;
+}
+
+.contact-section p {
+  color: #666;
+  line-height: 1.7;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.contact-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-section label {
+  font-weight: bold;
+  color: #333;
+}
+
+.contact-section input,
+.contact-section textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cfd8ea;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.contact-section textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact-section button {
+  align-self: center;
+  margin-top: 0.5rem;
+}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to Our Website</h1>
+      <p class="subtitle">Discover amazing things with us through a clean and modern experience.</p>
+
+      <div class="buttons">
+        <button class="button" onclick="showStart()">Get Started</button>
+        <button class="button" onclick="showInfo()">Learn More</button>
+      </div>
+
+      <section class="info-section">
+        <h2>Why Choose Us</h2>
+        <p>
+          We create clean, modern, and user-friendly digital experiences that help you
+          move faster, look more professional, and build with confidence.
+        </p>
+
+        <div class="features">
+          <div class="feature-box">
+            <h3>Modern Design</h3>
+            <p>Elegant layouts, clean spacing, and a professional visual style for your projects.</p>
+          </div>
+
+          <div class="feature-box">
+            <h3>Fast Development</h3>
+            <p>Build pages and improve them quickly with local AI directly inside VS Code.</p>
+          </div>
+
+          <div class="feature-box">
+            <h3>Smart Workflow</h3>
+            <p>Combine coding skills with AI assistance to create better results step by step.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section">
+  <h2>Contact Us</h2>
+  <p>We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.</p>
+  <form id="contactForm" action="#" method="post">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+
+  <button type="submit">Send</button>
+</form>
+
+<div id="successAlert" style="display: none; color: green; text-align: center; margin-top: 12px;">
+  Message sent successfully!
+</div>
+</section>
+    </div>
+  </section>
+
+  <script>
+    function showStart() {
+      alert("Welcome! Let's get started 🚀");
+    }
+
+    function showInfo() {
+      alert("This is a modern landing page built with local AI and VS Code.");
+    }
+  </script>
+  <script>
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  document.getElementById("successAlert").style.display = "block";
+
+  setTimeout(function() {
+    document.getElementById("successAlert").style.display = "none";
+  }, 3000);
+});
+</script>
+</body>
+</html>
