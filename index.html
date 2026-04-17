@@ -231,13 +231,19 @@
       margin-top: 0.5rem;
     }
 
-    #successAlert {
-      display: none;
-      color: #0f8a3c;
-      text-align: center;
-      margin-top: 12px;
-      font-weight: bold;
-    }
+   #successAlert {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: #eafaf0;
+  border: 1px solid #b7ebc6;
+  color: #0f8a3c;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 12px;
+}
 
     .footer {
       margin-top: 2rem;
@@ -254,11 +260,10 @@
     }
 
     .fade-in {
-      opacity: 0;
-      transform: translateY(80px);
-      transition: all 1s ease;
-    }
-
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1s ease;
+}
     .fade-in.show {
       opacity: 1;
       transform: translateY(0);
@@ -342,8 +347,9 @@
           We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.
         </p>
 
-        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" autocomplete="off">
           <input type="hidden" name="access_key" value="ae399f1f-3604-497f-b268-7910c24569a7">
+          <input type="hidden" name="redirect" value="">
           <label for="name">Name:</label>
           <input type="text" id="name" name="name" placeholder="Your Name" required />
 
@@ -356,7 +362,7 @@
           <button class="button" type="submit">Send</button>
         </form>
 
-        <div id="successAlert">Message sent successfully!</div>
+        <div id="successAlert">Thank you! Your message has been sent successfully.</div>
       </section>
 
       <footer class="footer">
@@ -366,33 +372,72 @@
   </section>
 
   <script>
-    function showStart() {
-      alert("Welcome! Let's get started 🚀");
-    }
+  function showStart() {
+    alert("Welcome! Let's get started 🚀");
+  }
 
-    function showInfo() {
-      alert("This is a modern landing page built with local AI and VS Code.");
-    }
+  function showInfo() {
+    alert("This is a modern landing page built with local AI and VS Code.");
+  }
 
-    document.getElementById("contactForm").addEventListener("submit", function () {
-  document.getElementById("successAlert").style.display = "block";
+  document.getElementById("contactForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  setTimeout(function () {
-    document.getElementById("successAlert").style.display = "none";
-  }, 3000);
-});
+    const form = e.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const successAlert = document.getElementById("successAlert");
+    const formData = new FormData(form);
 
-    const elements = document.querySelectorAll(".fade-in");
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+    submitButton.style.opacity = "0.7";
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-        }
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json"
+        },
+        body: formData
       });
-    });
 
-    elements.forEach((el) => observer.observe(el));
-  </script>
+      if (response.ok) {
+        successAlert.style.visibility = "visible";
+successAlert.style.opacity = "1";
+        successAlert.textContent = "Thank you! Your message has been sent successfully.";
+        form.reset();
+      } else {
+       successAlert.style.visibility = "visible";
+successAlert.style.opacity = "1";
+        successAlert.textContent = "Something went wrong. Please try again.";
+      }
+    } catch (error) {
+     successAlert.style.visibility = "visible";
+successAlert.style.opacity = "1";
+      successAlert.textContent = "Network error. Please check your connection and try again.";
+    }
+
+    submitButton.disabled = false;
+    submitButton.textContent = "Send";
+    submitButton.style.opacity = "1";
+
+    setTimeout(function () {
+      successAlert.style.opacity = "0";
+successAlert.style.visibility = "hidden";
+    }, 3000);
+  });
+
+  const elements = document.querySelectorAll(".fade-in");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  });
+
+  elements.forEach((el) => observer.observe(el));
+</script>
 </body>
 </html>
