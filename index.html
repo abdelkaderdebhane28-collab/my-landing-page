@@ -15,30 +15,32 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f9;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
     .navbar {
-      position: sticky;
-      top: 10px;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      background-color: #3b73d9;
-      color: white;
-      padding: 18px 28px;
-      border-radius: 16px;
-      margin: 20px auto 0;
-      max-width: 900px;
-      width: 92%;
-      box-shadow: 0 6px 18px rgba(59, 115, 217, 0.15);
-    }
+  position: sticky;
+  top: 10px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  background: rgba(59, 115, 217, 0.95);
+  color: white;
+  padding: 18px 28px;
+  border-radius: 20px;
+  margin: 20px auto 0;
+  max-width: 900px;
+  width: 92%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 30px rgba(59, 115, 217, 0.18);
+  backdrop-filter: blur(10px);
+}
 
     .nav-logo {
       font-size: 1.4rem;
@@ -52,16 +54,19 @@
       flex-wrap: wrap;
     }
 
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.2s ease;
-    }
+    ..nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: background-color 0.25s ease, opacity 0.2s ease;
+}
 
-    .nav-links a:hover {
-      opacity: 0.8;
-    }
+.nav-links a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.12);
+}
 
     .hero {
       min-height: 100vh;
@@ -72,27 +77,30 @@
     }
 
     .container {
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      padding: 2.5rem;
-      max-width: 900px;
-      width: 92%;
-      text-align: center;
-    }
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #eef2ff;
+  border-radius: 28px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  max-width: 900px;
+  width: 92%;
+    border: 1px solid #eef2ff;
+}
 
     h1 {
-      font-size: 3rem;
-      margin: 0 0 0.75rem;
-      color: #3b73d9;
-    }
+  font-size: 3.4rem;
+  margin: 0 0 1rem;
+  color: #3b73d9;
+  line-height: 1.15;
+}
 
     .subtitle {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 2rem;
-      line-height: 1.7;
-    }
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+  max-width: 720px;
+}
 
     .buttons {
       display: flex;
@@ -306,79 +314,78 @@
 
   <section class="hero">
     <div class="container">
-      <h1>Welcome to Our Website</h1>
-      <p class="subtitle">
-        Discover amazing things with us through a clean and modern experience.
-      </p>
+      <h1>Build Your Local AI Platform</h1>
+<p class="subtitle">
+  A modern starting point for creating a local AI experience powered by Ollama, smart tools, and step-by-step development.
+</p>
 
-      <div class="buttons">
-        <button class="button" onclick="showStart()">Get Started</button>
-        <button class="button" onclick="showInfo()">Learn More</button>
-      </div>
+      <<div class="buttons">
+  <button class="button" onclick="showStart()">Start Building</button>
+  <button class="button" onclick="showInfo()">See the Vision</button>
+</div>
 
       <section class="info-section fade-in" id="why-choose-us" style="transition-delay: 0.1s;">
-        <h2>Why Choose Us</h2>
-        <p>
-          We create clean, modern, and user-friendly digital experiences that help you
-          move faster, look more professional, and build with confidence.
-        </p>
+        <h2>Why Build with Us</h2>
+<p>
+  We are building a modern local AI platform that helps you create, test, and improve smart tools directly on your own machine with speed, privacy, and control.
+</p>
 
         <div class="features">
           <div class="feature-box">
-            <h3>Modern Design</h3>
-            <p>Elegant layouts, clean spacing, and a professional visual style for your projects.</p>
-          </div>
+  <h3>Local AI Control</h3>
+  <p>Run and shape your AI tools locally with more privacy, flexibility, and direct control over your workflow.</p>
+</div>
 
           <div class="feature-box">
-            <h3>Fast Development</h3>
-            <p>Build pages and improve them quickly with local AI directly inside VS Code.</p>
-          </div>
+  <h3>Smart Development</h3>
+  <p>Build websites, tools, and AI features faster with a local workflow powered by Ollama and VS Code.</p>
+</div>
 
           <div class="feature-box">
-            <h3>Smart Workflow</h3>
-            <p>Combine coding skills with AI assistance to create better results step by step.</p>
-          </div>
+  <h3>Future-Ready Platform</h3>
+  <p>Create the foundation for a local AI assistant that can chat, analyze files, support development, and grow into advanced automated tools.</p>
+</div>
         </div>
       </section>
 
       <section class="contact-section fade-in" id="contact-us" style="transition-delay: 0.3s;">
-        <h2>Contact Us</h2>
+        <<h2>Start Your Local AI Project</h2>
         <p>
-          We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.
-        </p>
+  Want to build your own local AI experience? Send us a message and start the journey toward a smarter, private, and more powerful platform.
+</p>
 
         <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" autocomplete="off">
           <input type="hidden" name="access_key" value="ae399f1f-3604-497f-b268-7910c24569a7">
           <input type="hidden" name="redirect" value="">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" placeholder="Your Name" required />
+          <label for="name">Your Name</label>
+<input type="text" id="name" name="name" placeholder="Enter your name" required />
 
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="Your Email" required />
+<label for="email">Your Email</label>
+<input type="email" id="email" name="email" placeholder="Enter your email" required />
 
-          <label for="message">Message:</label>
-          <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+<label for="message">Project Message</label>
+<textarea id="message" name="message" placeholder="Tell us about your local AI project" required></textarea>
 
-          <button class="button" type="submit">Send</button>
+          <button class="button" type="submit">Start My Project</button>
         </form>
 
         <div id="successAlert">Thank you! Your message has been sent successfully.</div>
       </section>
 
       <footer class="footer">
-        <p>© 2026 My Website. All rights reserved.</p>
+        <p>© 2026 Local AI Platform. Built step by step with Ollama, VS Code, and modern web tools.</p>
       </footer>
     </div>
   </section>
 
   <script>
   function showStart() {
-    alert("Welcome! Let's get started 🚀");
-  }
+  alert("Start building your local AI platform step by step 🚀");
+}
 
-  function showInfo() {
-    alert("This is a modern landing page built with local AI and VS Code.");
-  }
+function showInfo() {
+  alert("This project is the first step toward a complete local AI platform powered by Ollama.");
+}
 
   document.getElementById("contactForm").addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -389,7 +396,7 @@
     const formData = new FormData(form);
 
     submitButton.disabled = true;
-    submitButton.textContent = "Sending...";
+   submitButton.textContent = "Starting...";
     submitButton.style.opacity = "0.7";
 
     try {
@@ -404,7 +411,7 @@
       if (response.ok) {
         successAlert.style.visibility = "visible";
 successAlert.style.opacity = "1";
-        successAlert.textContent = "Thank you! Your message has been sent successfully.";
+        successAlert.textContent = "Thank you! Your local AI project request has been sent successfully.";
         form.reset();
       } else {
        successAlert.style.visibility = "visible";
@@ -418,7 +425,7 @@ successAlert.style.opacity = "1";
     }
 
     submitButton.disabled = false;
-    submitButton.textContent = "Send";
+    submitButton.textContent = "Start My Project";
     submitButton.style.opacity = "1";
 
     setTimeout(function () {
