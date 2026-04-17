@@ -15,6 +15,7 @@
       color: #333;
       margin: 0;
       padding: 0;
+      scroll-behavior: smooth;
     }
 
     .hero {
@@ -56,15 +57,22 @@
     }
 
     .button {
-      background-color: #3b73d9;
-      color: white;
-      border: none;
-      padding: 0.9rem 2rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 999px;
-      transition: transform 0.2s ease, background-color 0.3s ease;
-    }
+  background: linear-gradient(135deg, #3b73d9, #295bb3);
+  color: white;
+  border: none;
+  padding: 0.95rem 2.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+  box-shadow: 0 8px 18px rgba(59, 115, 217, 0.25);
+}
+
+.button:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 24px rgba(59, 115, 217, 0.35);
+  background: linear-gradient(135deg, #4b84ee, #2f63c2);
+}
 
     .button:hover {
       background-color: #295bb3;
@@ -184,9 +192,56 @@
   align-self: center;
   margin-top: 0.5rem;
 }
+  .navbar {
+  position: sticky;
+  top: 10px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3b73d9;
+  color: white;
+  padding: 18px 28px;
+  border-radius: 16px;
+  margin: 20px auto 0;
+  max-width: 900px;
+  width: 92%;
+  box-shadow: 0 6px 18px rgba(59, 115, 217, 0.15);
+}
+
+.nav-logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
+}
   </style>
 </head>
 <body>
+  <nav class="navbar">
+  <div class="nav-logo">MyLogo</div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#why-choose-us">About</a>
+    <a href="#contact-us">Contact</a>
+  </div>
+</nav>
   <section class="hero">
     <div class="container">
       <h1>Welcome to Our Website</h1>
@@ -197,7 +252,7 @@
         <button class="button" onclick="showInfo()">Learn More</button>
       </div>
 
-      <section class="info-section">
+      <section class="info-section" id="why-choose-us">
         <h2>Why Choose Us</h2>
         <p>
           We create clean, modern, and user-friendly digital experiences that help you
@@ -222,7 +277,7 @@
         </div>
       </section>
 
-      <section class="contact-section">
+      <section class="contact-section" id="contact-us">
   <h2>Contact Us</h2>
   <p>We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.</p>
   <form id="contactForm" action="#" method="post">
