@@ -342,7 +342,8 @@
           We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.
         </p>
 
-        <form id="contactForm" action="#" method="post">
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="ae399f1f-3604-497f-b268-7910c24569a7">
           <label for="name">Name:</label>
           <input type="text" id="name" name="name" placeholder="Your Name" required />
 
@@ -373,15 +374,13 @@
       alert("This is a modern landing page built with local AI and VS Code.");
     }
 
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      document.getElementById("successAlert").style.display = "block";
-      this.reset();
+    document.getElementById("contactForm").addEventListener("submit", function () {
+  document.getElementById("successAlert").style.display = "block";
 
-      setTimeout(function () {
-        document.getElementById("successAlert").style.display = "none";
-      }, 3000);
-    });
+  setTimeout(function () {
+    document.getElementById("successAlert").style.display = "none";
+  }, 3000);
+});
 
     const elements = document.querySelectorAll(".fade-in");
 
