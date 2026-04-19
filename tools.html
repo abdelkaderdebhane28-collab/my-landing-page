@@ -52,9 +52,13 @@ h2 {
   max-width: none;
   margin: 0;
   text-align: left;
-  box-shadow: 0 6px 16px rgba(59, 115, 217, 0.08);
+  box-shadow: 0 10px 24px rgba(59, 115, 217, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
+.tool-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(59, 115, 217, 0.12);
+}
 .tool-card h3 {
   margin-top: 0;
   margin-bottom: 0.6rem;
