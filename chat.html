@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Chat - Local AI Platform</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+    color: #333;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
+  }
+.container {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #eef2ff;
+  border-radius: 28px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  max-width: 900px;
+  width: 92%;
+  margin: 40px auto;
+  text-align: center;
+}
+.eyebrow {
+  color: #3b73d9;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+ h1 {
+  color: #3b73d9;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+  p {
+  max-width: 700px;
+  margin: 0 auto 1.25rem;
+  line-height: 1.8;
+  color: #555;
+  font-size: 1.05rem;
+}
+.chat-box {
+  background: #f8faff;
+  border: 1px solid #e3ebff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  max-width: 760px;
+  margin: 1.5rem auto;
+  text-align: left;
+}
+
+.message {
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  max-width: 85%;
+}
+
+.ai-message {
+  background: #eef4ff;
+  color: #234;
+}
+
+.user-message {
+  background: #3b73d9;
+  color: white;
+  margin-left: auto;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid #cfd8ea;
+  border-radius: 14px;
+  font-size: 1rem;
+}
+
+.chat-input-area button {
+  border: none;
+  padding: 14px 22px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #3b73d9, #295bb3);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+  <div class="eyebrow">LOCAL CHAT</div>
+  <h1>Local AI Chat</h1>
+  <p>This page will become the first real chat interface of the local AI platform.</p>
+
+  <div id="chatBox" class="chat-box">
+  <div class="message ai-message">Hello! I am your future local AI assistant.</div>
+  <div class="message user-message">I want to build and test my local AI workflow.</div>
+  <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
+</div>
+
+<div class="chat-input-area">
+  <input id="chatInput" type="text" placeholder="Type your message here..." />
+  <button id="sendButton">Send</button>
+</div>
+</div>
+<script>
+  const chatInput = document.getElementById("chatInput");
+  const sendButton = document.getElementById("sendButton");
+  const chatBox = document.getElementById("chatBox");
+
+     sendButton.addEventListener("click", function () {
+  const text = chatInput.value.trim();
+
+  if (text === "") return;
+
+  const userMessage = document.createElement("div");
+  userMessage.className = "message user-message";
+  userMessage.textContent = text;
+
+  chatBox.appendChild(userMessage);
+
+  const aiReply = document.createElement("div");
+  aiReply.className = "message ai-message";
+  aiReply.textContent = "This is a temporary local reply. Later, this will come from Ollama.";
+
+   chatBox.appendChild(aiReply);
+chatInput.value = "";
+chatBox.scrollTop = chatBox.scrollHeight;
+chatInput.focus();
+
+});
+chatInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    sendButton.click();
+  }
+});
+</script>
+</body>
+
+</html>
