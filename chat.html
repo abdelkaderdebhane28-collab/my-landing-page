@@ -97,6 +97,27 @@
   font-weight: 600;
   cursor: pointer;
 }
+.chat-input-area button:disabled,
+.chat-input-area input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #3b73d9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+#clearButton {
+  background: #e9eefc;
+  color: #234;
+  border: 1px solid #cfd8ea;
+}
 </style>
 </head>
 <body>
@@ -104,8 +125,11 @@
   <div class="eyebrow">LOCAL CHAT</div>
   <h1>Local AI Chat</h1>
   <p>This page will become the first real chat interface of the local AI platform.</p>
+  <p><a href="tools.html" class="back-link">← Back to Tools</a></p>
+<p id="chatStatus" class="lead">Status: Ready</p>
+<p id="chatCount" class="lead">Messages: 0</p>
 
-  <div id="chatBox" class="chat-box">
+<div id="chatBox" class="chat-box">
   <div class="message ai-message">Hello! I am your future local AI assistant.</div>
   <div class="message user-message">I want to build and test my local AI workflow.</div>
   <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
@@ -114,37 +138,163 @@
 <div class="chat-input-area">
   <input id="chatInput" type="text" placeholder="Type your message here..." />
   <button id="sendButton">Send</button>
+  <button id="clearButton" type="button">Clear</button>
 </div>
 </div>
 <script>
-  const chatInput = document.getElementById("chatInput");
-  const sendButton = document.getElementById("sendButton");
-  const chatBox = document.getElementById("chatBox");
+ const chatInput = document.getElementById("chatInput");
+const sendButton = document.getElementById("sendButton");
+const clearButton = document.getElementById("clearButton");
+const chatBox = document.getElementById("chatBox");
+const chatStatus = document.getElementById("chatStatus");
+const chatCount = document.getElementById("chatCount");
 
-     sendButton.addEventListener("click", function () {
-  const text = chatInput.value.trim();
+  let isWaitingForReply = false;
 
-  if (text === "") return;
+  const defaultMessages = [
+    { text: "Hello! I am your future local AI assistant.", type: "ai-message" },
+    { text: "I want to build and test my local AI workflow.", type: "user-message" },
+    { text: "Great. This page will later connect to your local Ollama models.", type: "ai-message" }
+  ];
 
-  const userMessage = document.createElement("div");
-  userMessage.className = "message user-message";
-  userMessage.textContent = text;
+  let messages = [];
 
-  chatBox.appendChild(userMessage);
+  function saveChat() {
+    localStorage.setItem("localAiChatHistory", JSON.stringify(messages));
+  }
 
-  const aiReply = document.createElement("div");
-  aiReply.className = "message ai-message";
-  aiReply.textContent = "This is a temporary local reply. Later, this will come from Ollama.";
+  function renderMessages() {
+  chatBox.innerHTML = "";
 
-   chatBox.appendChild(aiReply);
-chatInput.value = "";
-chatBox.scrollTop = chatBox.scrollHeight;
+  messages.forEach((item) => {
+    const message = document.createElement("div");
+    message.className = `message ${item.type}`;
+    message.textContent = item.text;
+    chatBox.appendChild(message);
+  });
+
+  chatCount.textContent = `Messages: ${messages.length}`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+  function addMessage(text, type) {
+    messages.push({ text, type });
+    renderMessages();
+    saveChat();
+  }
+function updateInputState() {
+  const hasText = chatInput.value.trim() !== "";
+  sendButton.disabled = isWaitingForReply || !hasText;
+  clearButton.disabled = isWaitingForReply;
+}
+
+  async function getAIResponse(text) {
+    const lowerText = text.toLowerCase();
+
+    let aiResponse = "This is a temporary local reply. Later, this will come from Ollama.";
+
+    if (lowerText.includes("hello") || lowerText.includes("hi")) {
+      aiResponse = "Hello! The local AI chat is working and getting closer to a real assistant.";
+    } else if (lowerText.includes("ollama")) {
+      aiResponse = "Yes, the next big step will be connecting this chat interface to Ollama locally.";
+    } else if (lowerText.includes("project")) {
+      aiResponse = "This platform is growing step by step into a full local AI project workspace.";
+    } else if (lowerText.includes("code")) {
+      aiResponse = "Later, this local assistant will also help with coding and development tasks.";
+    } else if (lowerText.includes("file")) {
+      aiResponse = "File analysis is planned as one of the next important tools in this platform.";
+    }
+
+    return aiResponse;
+  }
+
+  async function sendMessage() {
+    const text = chatInput.value.trim();
+
+if (text === "") {
+  updateInputState();
+  return;
+}
+if (isWaitingForReply) return;
+
+    isWaitingForReply = true;
+chatStatus.textContent = "Status: Thinking...";
+
+    addMessage(text, "user-message");
+    chatInput.value = "";
+
+   chatInput.disabled = true;
+updateInputState();
+
+    messages.push({ text: "Thinking", type: "ai-message" });
+    renderMessages();
+
+    let dots = 0;
+    const loadingInterval = setInterval(() => {
+      dots = (dots + 1) % 4;
+      messages[messages.length - 1].text = "Thinking" + ".".repeat(dots);
+      renderMessages();
+    }, 400);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      clearInterval(loadingInterval);
+
+      messages[messages.length - 1].text = await getAIResponse(text);
+      renderMessages();
+      saveChat();
+    } catch (error) {
+      clearInterval(loadingInterval);
+      messages[messages.length - 1].text = "Something went wrong. Please try again.";
+      renderMessages();
+      saveChat();
+    } finally {
+     isWaitingForReply = false;
+chatStatus.textContent = "Status: Ready";
+chatInput.disabled = false;
+updateInputState();
 chatInput.focus();
+chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  }
 
-});
+  clearButton.addEventListener("click", function () {
+    if (isWaitingForReply) return;
+
+    messages = [...defaultMessages];
+    renderMessages();
+    saveChat();
+    chatInput.focus();
+  });
+
+  const savedChat = localStorage.getItem("localAiChatHistory");
+
+  if (savedChat) {
+    try {
+      messages = JSON.parse(savedChat);
+      if (!Array.isArray(messages) || messages.length === 0) {
+        messages = [...defaultMessages];
+      }
+    } catch (error) {
+      messages = [...defaultMessages];
+    }
+  } else {
+    messages = [...defaultMessages];
+  }
+
+  renderMessages();
+  updateInputState();
+
+ sendButton.addEventListener("click", sendMessage);
+
+chatInput.addEventListener("input", updateInputState);
+
 chatInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
-    sendButton.click();
+    event.preventDefault();
+    if (!sendButton.disabled) {
+      sendMessage();
+    }
   }
 });
 </script>
