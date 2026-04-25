@@ -128,7 +128,8 @@
   <p><a href="tools.html" class="back-link">← Back to Tools</a></p>
 <p id="chatStatus" class="lead">Status: Ready</p>
 <p id="chatMode" class="lead">Mode: Demo</p>
-<p id="chatModel" class="lead">Model: llama3</p>
+<p id="chatModel" class="lead">Model: gemma3:latest</p>
+<p id="chatSource" class="lead">Response source: Demo replies</p>
 <p id="chatContext" class="lead">Context limit: 10</p>
 <p id="chatConnection" class="lead">Connection: Not tested</p>
 <p id="chatCount" class="lead">Messages: 0</p>
@@ -159,22 +160,30 @@ const chatBox = document.getElementById("chatBox");
 const chatStatus = document.getElementById("chatStatus");
 const chatMode = document.getElementById("chatMode");
 const chatModel = document.getElementById("chatModel");
+const chatSource = document.getElementById("chatSource");
 const chatContext = document.getElementById("chatContext");
 const chatConnection = document.getElementById("chatConnection");
 const chatCount = document.getElementById("chatCount");
 let USE_LOCAL_BACKEND = false;
 const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-const LOCAL_MODEL_NAME = "llama3";
-const SYSTEM_PROMPT = "You are a helpful local AI assistant for a local AI platform. Keep answers clear and practical.";
+const LOCAL_MODEL_NAME = "gemma3:latest";
+ const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Keep answers clear, practical, and focused on local AI.";
 const MAX_CONTEXT_MESSAGES = 10;
 const MODE_STORAGE_KEY = "localAiChatMode";
 const LOCAL_REQUEST_TIMEOUT = 15000;
 
-  function refreshModeUI() {
+ function refreshModeUI() {
   chatMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
   chatModel.textContent = `Model: ${LOCAL_MODEL_NAME}`;
+  chatSource.textContent = USE_LOCAL_BACKEND ? "Response source: Ollama local backend" : "Response source: Demo replies";
   chatContext.textContent = `Context limit: ${MAX_CONTEXT_MESSAGES}`;
-  toggleModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
+
+  if (window.location.protocol === "file:") {
+    toggleModeButton.textContent = "Use Live Server";
+  } else {
+    toggleModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
+  }
+
   localStorage.setItem(MODE_STORAGE_KEY, USE_LOCAL_BACKEND ? "local" : "demo");
 }
 const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
@@ -182,6 +191,12 @@ if (savedMode === "local") {
   USE_LOCAL_BACKEND = true;
 } else {
   USE_LOCAL_BACKEND = false;
+}
+
+if (window.location.protocol === "file:") {
+  USE_LOCAL_BACKEND = false;
+  chatConnection.textContent = "Connection: Please open this page with Live Server";
+  localStorage.setItem(MODE_STORAGE_KEY, "demo");
 }
 
 refreshModeUI();
@@ -271,7 +286,8 @@ updateInputState();
 }
 
 isLocalBackendReady = false;
-chatConnection.textContent = "Connection: Unavailable";
+chatConnection.textContent = "Connection: Unavailable - " + error.message;
+console.error("Ollama connection test failed:", error);
 updateInputState();
   }
 }
@@ -445,6 +461,14 @@ resetButton.addEventListener("click", function () {
 testConnectionButton.addEventListener("click", testLocalConnection);
 toggleModeButton.addEventListener("click", async function () {
   if (isWaitingForReply) return;
+
+  if (window.location.protocol === "file:") {
+    USE_LOCAL_BACKEND = false;
+    chatConnection.textContent = "Connection: Please open this page with Live Server";
+    refreshModeUI();
+    updateInputState();
+    return;
+  }
 
   USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
   chatConnection.textContent = "Connection: Not tested";
