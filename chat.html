@@ -130,8 +130,10 @@
 <p id="chatMode" class="lead">Mode: Demo</p>
 <p id="chatModel" class="lead">Model: gemma3:latest</p>
 <p id="chatSource" class="lead">Response source: Demo replies</p>
+<p id="chatInstruction" class="lead">Instruction style: Direct and practical</p>
 <p id="chatContext" class="lead">Context limit: 10</p>
 <p id="chatConnection" class="lead">Connection: Not tested</p>
+<p class="lead">Local backend requires Live Server, not file opening.</p>
 <p id="chatCount" class="lead">Messages: 0</p>
 
 <div id="chatBox" class="chat-box">
@@ -161,13 +163,14 @@ const chatStatus = document.getElementById("chatStatus");
 const chatMode = document.getElementById("chatMode");
 const chatModel = document.getElementById("chatModel");
 const chatSource = document.getElementById("chatSource");
+const chatInstruction = document.getElementById("chatInstruction");
 const chatContext = document.getElementById("chatContext");
 const chatConnection = document.getElementById("chatConnection");
 const chatCount = document.getElementById("chatCount");
 let USE_LOCAL_BACKEND = false;
 const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
 const LOCAL_MODEL_NAME = "gemma3:latest";
- const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Keep answers clear, practical, and focused on local AI.";
+const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Answer the user's question directly first, then add a short useful explanation only if needed. Do not use marketing language. Keep answers clear, practical, and focused on local AI.";
 const MAX_CONTEXT_MESSAGES = 10;
 const MODE_STORAGE_KEY = "localAiChatMode";
 const LOCAL_REQUEST_TIMEOUT = 15000;
@@ -176,7 +179,8 @@ const LOCAL_REQUEST_TIMEOUT = 15000;
   chatMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
   chatModel.textContent = `Model: ${LOCAL_MODEL_NAME}`;
   chatSource.textContent = USE_LOCAL_BACKEND ? "Response source: Ollama local backend" : "Response source: Demo replies";
-  chatContext.textContent = `Context limit: ${MAX_CONTEXT_MESSAGES}`;
+chatInstruction.textContent = "Instruction style: Direct and practical";
+chatContext.textContent = `Context limit: ${MAX_CONTEXT_MESSAGES}`;
 
   if (window.location.protocol === "file:") {
     toggleModeButton.textContent = "Use Live Server";
