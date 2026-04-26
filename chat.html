@@ -142,9 +142,10 @@
   <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
 </div>
 
-   <div class="chat-input-area">
+  <div class="chat-input-area">
   <input id="chatInput" type="text" placeholder="Type your message here..." />
   <button id="sendButton">Send</button>
+  <button id="stopButton" type="button">Stop</button>
   <button id="clearButton" type="button">Clear</button>
   <button id="resetButton" type="button">Reset</button>
   <button id="testConnectionButton" type="button">Test Connection</button>
@@ -154,6 +155,7 @@
 <script>
 const chatInput = document.getElementById("chatInput");
 const sendButton = document.getElementById("sendButton");
+const stopButton = document.getElementById("stopButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
 const testConnectionButton = document.getElementById("testConnectionButton");
@@ -204,8 +206,10 @@ if (window.location.protocol === "file:") {
 }
 
 refreshModeUI();
- let isWaitingForReply = false;
+let isWaitingForReply = false;
 let isLocalBackendReady = false;
+let currentRequestController = null;
+let wasRequestStoppedByUser = false;
 
   const defaultMessages = [
     { text: "Hello! I am your future local AI assistant.", type: "ai-message" },
@@ -243,6 +247,7 @@ let isLocalBackendReady = false;
   const localModeBlocked = USE_LOCAL_BACKEND && !isLocalBackendReady;
 
   sendButton.disabled = isWaitingForReply || !hasText || localModeBlocked;
+  stopButton.disabled = !isWaitingForReply;
   clearButton.disabled = isWaitingForReply;
   resetButton.disabled = isWaitingForReply;
   testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
@@ -320,8 +325,8 @@ const backendMessages = [
   ...conversationMessages
 ];
 
-   const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), LOCAL_REQUEST_TIMEOUT);
+  currentRequestController = new AbortController();
+const timeoutId = setTimeout(() => currentRequestController.abort(), LOCAL_REQUEST_TIMEOUT);
 
 let response;
 
@@ -336,10 +341,11 @@ try {
       messages: backendMessages,
       stream: false
     }),
-    signal: controller.signal
+    signal: currentRequestController.signal
   });
 } finally {
   clearTimeout(timeoutId);
+  currentRequestController = null;
 }
 
 if (!response.ok) {
@@ -379,9 +385,10 @@ if (text === "") {
 if (isWaitingForReply) return;
 
     isWaitingForReply = true;
+wasRequestStoppedByUser = false;
 chatStatus.textContent = "Status: Thinking...";
 
-    addMessage(text, "user-message");
+addMessage(text, "user-message");
     chatInput.value = "";
 
    chatInput.disabled = true;
@@ -408,11 +415,13 @@ const loadingInterval = setInterval(() => {
     } catch (error) {
   clearInterval(loadingInterval);
 
-  if (error.name === "AbortError") {
-    messages[messages.length - 1].text = "The local backend request timed out. Please check Ollama and try again.";
-  } else {
-    messages[messages.length - 1].text = "Something went wrong. Please try again.";
-  }
+ if (error.name === "AbortError" && wasRequestStoppedByUser) {
+  messages[messages.length - 1].text = "Response stopped by user.";
+} else if (error.name === "AbortError") {
+  messages[messages.length - 1].text = "The local backend request timed out. Please check Ollama and try again.";
+} else {
+  messages[messages.length - 1].text = "Something went wrong. Please try again.";
+}
 
   renderMessages();
   saveChat();
@@ -462,7 +471,16 @@ resetButton.addEventListener("click", function () {
   renderMessages();
   updateInputState();
 
- sendButton.addEventListener("click", sendMessage);
+sendButton.addEventListener("click", sendMessage);
+
+stopButton.addEventListener("click", function () {
+  wasRequestStoppedByUser = true;
+
+  if (currentRequestController) {
+    currentRequestController.abort();
+  }
+});
+
 testConnectionButton.addEventListener("click", testLocalConnection);
 toggleModeButton.addEventListener("click", async function () {
   if (isWaitingForReply) return;
