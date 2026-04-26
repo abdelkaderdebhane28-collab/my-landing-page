@@ -303,7 +303,7 @@ const demoTexts = defaultMessages.map((item) => item.text);
 const conversationMessages = messages
   .filter((item) => {
     return item.text &&
-      !item.text.startsWith("Thinking") &&
+     !item.text.includes("thinking") &&                    
       !demoTexts.includes(item.text);
   })
   .map((item) => ({
@@ -387,16 +387,17 @@ chatStatus.textContent = "Status: Thinking...";
    chatInput.disabled = true;
 updateInputState();
 
-    messages.push({ text: "Thinking", type: "ai-message" });
-    renderMessages();
+   const thinkingLabel = USE_LOCAL_BACKEND ? "Ollama is thinking" : "Demo is thinking";
 
-    let dots = 0;
-    const loadingInterval = setInterval(() => {
-      dots = (dots + 1) % 4;
-      messages[messages.length - 1].text = "Thinking" + ".".repeat(dots);
-      renderMessages();
-    }, 400);
+messages.push({ text: thinkingLabel, type: "ai-message" });
+renderMessages();
 
+let dots = 0;
+const loadingInterval = setInterval(() => {
+  dots = (dots + 1) % 4;
+  messages[messages.length - 1].text = thinkingLabel + ".".repeat(dots);
+  renderMessages();
+}, 400);
     try {
       await new Promise(resolve => setTimeout(resolve, 1200));
       clearInterval(loadingInterval);
