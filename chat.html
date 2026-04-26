@@ -142,10 +142,11 @@
   <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
 </div>
 
-  <div class="chat-input-area">
+ <div class="chat-input-area">
   <input id="chatInput" type="text" placeholder="Type your message here..." />
   <button id="sendButton">Send</button>
   <button id="stopButton" type="button">Stop</button>
+  <button id="newChatButton" type="button">New Chat</button>
   <button id="clearButton" type="button">Clear</button>
   <button id="resetButton" type="button">Reset</button>
   <button id="testConnectionButton" type="button">Test Connection</button>
@@ -156,6 +157,7 @@
 const chatInput = document.getElementById("chatInput");
 const sendButton = document.getElementById("sendButton");
 const stopButton = document.getElementById("stopButton");
+const newChatButton = document.getElementById("newChatButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
 const testConnectionButton = document.getElementById("testConnectionButton");
@@ -247,9 +249,10 @@ let wasRequestStoppedByUser = false;
   const localModeBlocked = USE_LOCAL_BACKEND && !isLocalBackendReady;
 
   sendButton.disabled = isWaitingForReply || !hasText || localModeBlocked;
-  stopButton.disabled = !isWaitingForReply;
-  clearButton.disabled = isWaitingForReply;
-  resetButton.disabled = isWaitingForReply;
+ stopButton.disabled = !isWaitingForReply;
+newChatButton.disabled = isWaitingForReply;
+clearButton.disabled = isWaitingForReply;
+resetButton.disabled = isWaitingForReply;
   testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
 }
 async function testLocalConnection() {
@@ -435,14 +438,23 @@ chatBox.scrollTop = chatBox.scrollHeight;
     }
   }
 
-  clearButton.addEventListener("click", function () {
-    if (isWaitingForReply) return;
+     newChatButton.addEventListener("click", function () {
+  if (isWaitingForReply) return;
 
-    messages = [...defaultMessages];
-    renderMessages();
-    saveChat();
-    chatInput.focus();
-  });
+  messages = [
+    {
+      text: USE_LOCAL_BACKEND
+        ? "New local Ollama chat started."
+        : "New demo chat started.",
+      type: "ai-message"
+    }
+  ];
+
+  renderMessages();
+  saveChat();
+  updateInputState();
+  chatInput.focus();
+});
 resetButton.addEventListener("click", function () {
   if (isWaitingForReply) return;
 
