@@ -129,6 +129,16 @@
 <p id="chatStatus" class="lead">Status: Ready</p>
 <p id="chatMode" class="lead">Mode: Demo</p>
 <p id="chatModel" class="lead">Model: gemma3:latest</p>
+<p id="lastRequestModel" class="lead">Last request model: none</p>
+
+<div class="lead">
+  <label for="modelSelect"><strong>Select model:</strong></label>
+  <select id="modelSelect">
+    <option value="gemma3:latest">gemma3:latest</option>
+    <option value="devstral:latest">devstral:latest</option>
+  </select>
+</div>
+
 <p id="chatSource" class="lead">Response source: Demo replies</p>
 <p id="chatInstruction" class="lead">Instruction style: Direct and practical</p>
 <p id="chatContext" class="lead">Context limit: 10</p>
@@ -166,6 +176,8 @@ const chatBox = document.getElementById("chatBox");
 const chatStatus = document.getElementById("chatStatus");
 const chatMode = document.getElementById("chatMode");
 const chatModel = document.getElementById("chatModel");
+const lastRequestModel = document.getElementById("lastRequestModel");
+const modelSelect = document.getElementById("modelSelect");
 const chatSource = document.getElementById("chatSource");
 const chatInstruction = document.getElementById("chatInstruction");
 const chatContext = document.getElementById("chatContext");
@@ -173,7 +185,7 @@ const chatConnection = document.getElementById("chatConnection");
 const chatCount = document.getElementById("chatCount");
 let USE_LOCAL_BACKEND = false;
 const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-const LOCAL_MODEL_NAME = "gemma3:latest";
+let LOCAL_MODEL_NAME = "gemma3:latest";
 const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Answer the user's question directly first, then add a short useful explanation only if needed. Do not use marketing language. Keep answers clear, practical, and focused on local AI.";
 const MAX_CONTEXT_MESSAGES = 10;
 const MODE_STORAGE_KEY = "localAiChatMode";
@@ -254,6 +266,7 @@ newChatButton.disabled = isWaitingForReply;
 clearButton.disabled = isWaitingForReply;
 resetButton.disabled = isWaitingForReply;
   testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
+  modelSelect.disabled = isWaitingForReply;
 }
 async function testLocalConnection() {
   if (!USE_LOCAL_BACKEND) {
@@ -333,17 +346,19 @@ const timeoutId = setTimeout(() => currentRequestController.abort(), LOCAL_REQUE
 
 let response;
 
+lastRequestModel.textContent = `Last request model: ${LOCAL_MODEL_NAME}`;
+
 try {
   response = await fetch(LOCAL_BACKEND_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      model: LOCAL_MODEL_NAME,
-      messages: backendMessages,
-      stream: false
-    }),
+   body: JSON.stringify({
+  model: LOCAL_MODEL_NAME,
+  messages: backendMessages,
+  stream: false
+}),
     signal: currentRequestController.signal
   });
 } finally {
@@ -482,6 +497,15 @@ resetButton.addEventListener("click", function () {
 
   renderMessages();
   updateInputState();
+modelSelect.addEventListener("change", function () {
+  if (isWaitingForReply) return;
+
+  LOCAL_MODEL_NAME = modelSelect.value;
+  isLocalBackendReady = false;
+  chatConnection.textContent = "Connection: Not tested";
+  refreshModeUI();
+  updateInputState();
+});
 
 sendButton.addEventListener("click", sendMessage);
 
