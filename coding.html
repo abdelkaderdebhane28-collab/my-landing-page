@@ -94,6 +94,16 @@
   font-weight: 600;
   cursor: pointer;
 }
+#toggleCodingModeButton {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3b73d9, #295bb3);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
 .code-panel button {
   margin-top: 14px;
   border: none;
@@ -141,9 +151,12 @@
     <div class="eyebrow">CODING ASSISTANT</div>
     <h1>Local Coding Assistant</h1>
 
-    <p class="lead">
-      A future local AI tool for helping with code, debugging, explanations, and project development.
-    </p>
+   <p class="lead">
+  A future local AI tool for helping with code, debugging, explanations, and project development.
+</p>
+
+<p id="codingMode" class="lead">Mode: Demo</p>
+<button id="toggleCodingModeButton" type="button">Switch to Local</button>
 
    <p>
   This page will become the coding assistant module of the Local AI Platform.
@@ -164,10 +177,24 @@
 <a href="tools.html">← Back to Tools</a>
   </div>
   <script>
-  const codeInput = document.getElementById("codeInput");
-  const analyzeButton = document.getElementById("analyzeButton");
-  const analysisResult = document.getElementById("analysisResult");
+const codeInput = document.getElementById("codeInput");
+const analyzeButton = document.getElementById("analyzeButton");
+const analysisResult = document.getElementById("analysisResult");
+const codingMode = document.getElementById("codingMode");
+const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
 
+let USE_LOCAL_BACKEND = false;
+
+function refreshCodingModeUI() {
+  codingMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
+  toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
+}
+
+refreshCodingModeUI();
+toggleCodingModeButton.addEventListener("click", function () {
+  USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
+  refreshCodingModeUI();
+});
   analyzeButton.addEventListener("click", function () {
     const code = codeInput.value.trim();
 
