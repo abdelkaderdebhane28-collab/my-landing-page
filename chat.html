@@ -168,13 +168,14 @@
   <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
 </div>
 
- <div class="chat-input-area">
+  <div class="chat-input-area">
   <input id="chatInput" type="text" placeholder="Type your message here..." />
   <button id="sendButton">Send</button>
   <button id="stopButton" type="button">Stop</button>
   <button id="newChatButton" type="button">New Chat</button>
   <button id="clearButton" type="button">Clear</button>
   <button id="resetButton" type="button">Reset</button>
+  <button id="exportButton" type="button">Export</button>
   <button id="testConnectionButton" type="button">Test Connection</button>
   <button id="toggleModeButton" type="button">Switch to Local</button>
 </div>
@@ -186,6 +187,7 @@ const stopButton = document.getElementById("stopButton");
 const newChatButton = document.getElementById("newChatButton");
 const clearButton = document.getElementById("clearButton");
 const resetButton = document.getElementById("resetButton");
+const exportButton = document.getElementById("exportButton");
 const testConnectionButton = document.getElementById("testConnectionButton");
 const toggleModeButton = document.getElementById("toggleModeButton");
 const chatBox = document.getElementById("chatBox");
@@ -308,7 +310,8 @@ chatBox.appendChild(message);
 newChatButton.disabled = isWaitingForReply;
 clearButton.disabled = isWaitingForReply;
 resetButton.disabled = isWaitingForReply;
-  testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
+exportButton.disabled = isWaitingForReply || messages.length === 0;
+testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
   modelSelect.disabled = isWaitingForReply;
 }
 async function testLocalConnection() {
@@ -512,6 +515,25 @@ chatBox.scrollTop = chatBox.scrollHeight;
   saveChat();
   updateInputState();
   chatInput.focus();
+});
+exportButton.addEventListener("click", function () {
+  if (isWaitingForReply || messages.length === 0) return;
+
+  const lines = messages.map((item) => {
+    const role = item.type === "user-message" ? "User" : "Assistant";
+    return `${role}: ${item.text}`;
+  });
+
+  const content = lines.join("\n\n");
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "local-ai-chat-export.txt";
+  link.click();
+
+  URL.revokeObjectURL(url);
 });
 resetButton.addEventListener("click", function () {
   if (isWaitingForReply) return;
