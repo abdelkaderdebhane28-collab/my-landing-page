@@ -189,6 +189,7 @@ let LOCAL_MODEL_NAME = "gemma3:latest";
 const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Answer the user's question directly first, then add a short useful explanation only if needed. Do not use marketing language. Keep answers clear, practical, and focused on local AI.";
 const MAX_CONTEXT_MESSAGES = 10;
 const MODE_STORAGE_KEY = "localAiChatMode";
+const MODEL_STORAGE_KEY = "localAiSelectedModel";
 const LOCAL_REQUEST_TIMEOUT = 15000;
 
  function refreshModeUI() {
@@ -212,7 +213,11 @@ if (savedMode === "local") {
 } else {
   USE_LOCAL_BACKEND = false;
 }
-
+const savedModel = localStorage.getItem(MODEL_STORAGE_KEY);
+if (savedModel) {
+  LOCAL_MODEL_NAME = savedModel;
+  modelSelect.value = savedModel;
+}
 if (window.location.protocol === "file:") {
   USE_LOCAL_BACKEND = false;
   chatConnection.textContent = "Connection: Please open this page with Live Server";
@@ -501,6 +506,8 @@ modelSelect.addEventListener("change", function () {
   if (isWaitingForReply) return;
 
   LOCAL_MODEL_NAME = modelSelect.value;
+  localStorage.setItem(MODEL_STORAGE_KEY, LOCAL_MODEL_NAME);
+
   isLocalBackendReady = false;
   chatConnection.textContent = "Connection: Not tested";
   refreshModeUI();
