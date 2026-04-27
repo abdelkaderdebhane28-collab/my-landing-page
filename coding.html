@@ -156,6 +156,8 @@
 </p>
 
 <p id="codingMode" class="lead">Mode: Demo</p>
+<p id="codingModel" class="lead">Model: gemma3:latest</p>
+<p id="codingConnection" class="lead">Connection: Not tested</p>
 <button id="toggleCodingModeButton" type="button">Switch to Local</button>
 
    <p>
@@ -181,19 +183,64 @@ const codeInput = document.getElementById("codeInput");
 const analyzeButton = document.getElementById("analyzeButton");
 const analysisResult = document.getElementById("analysisResult");
 const codingMode = document.getElementById("codingMode");
+const codingModel = document.getElementById("codingModel");
+const codingConnection = document.getElementById("codingConnection");
 const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
 
 let USE_LOCAL_BACKEND = false;
 
+const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
+const LOCAL_MODEL_NAME = "gemma3:latest";
+const CODING_SYSTEM_PROMPT = "You are the coding assistant of the Local AI Platform. Analyze code clearly, explain problems, suggest practical fixes, and keep answers direct.";
+
 function refreshCodingModeUI() {
   codingMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
-  toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
+codingModel.textContent = `Model: ${LOCAL_MODEL_NAME}`;
+toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
 }
 
 refreshCodingModeUI();
-toggleCodingModeButton.addEventListener("click", function () {
+async function testCodingConnection() {
+  if (!USE_LOCAL_BACKEND) {
+    codingConnection.textContent = "Connection: Demo mode active";
+    return;
+  }
+
+  codingConnection.textContent = "Connection: Testing...";
+
+  try {
+    const tagsUrl = LOCAL_BACKEND_URL.replace("/api/chat", "/api/tags");
+    const response = await fetch(tagsUrl);
+
+    if (!response.ok) {
+      throw new Error("Connection failed");
+    }
+
+    const data = await response.json();
+    const models = Array.isArray(data.models) ? data.models : [];
+
+    const modelExists = models.some((model) => {
+      return model.name === LOCAL_MODEL_NAME || model.name.startsWith(LOCAL_MODEL_NAME + ":");
+    });
+
+    if (modelExists) {
+      codingConnection.textContent = `Connection: Available (${LOCAL_MODEL_NAME} found)`;
+    } else {
+      codingConnection.textContent = `Connection: Available (but ${LOCAL_MODEL_NAME} not found)`;
+    }
+  } catch (error) {
+    codingConnection.textContent = "Connection: Unavailable";
+  }
+}
+toggleCodingModeButton.addEventListener("click", async function () {
   USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
   refreshCodingModeUI();
+
+  if (USE_LOCAL_BACKEND) {
+    await testCodingConnection();
+  } else {
+    codingConnection.textContent = "Connection: Demo mode active";
+  }
 });
   analyzeButton.addEventListener("click", function () {
     const code = codeInput.value.trim();
