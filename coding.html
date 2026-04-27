@@ -188,6 +188,7 @@ const codingConnection = document.getElementById("codingConnection");
 const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
 
 let USE_LOCAL_BACKEND = false;
+let isCodingBackendReady = false;
 
 const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
 const LOCAL_MODEL_NAME = "gemma3:latest";
@@ -201,12 +202,14 @@ toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Swi
 
 refreshCodingModeUI();
 async function testCodingConnection() {
-  if (!USE_LOCAL_BACKEND) {
-    codingConnection.textContent = "Connection: Demo mode active";
-    return;
-  }
+ if (!USE_LOCAL_BACKEND) {
+  isCodingBackendReady = false;
+  codingConnection.textContent = "Connection: Demo mode active";
+  return;
+}
 
-  codingConnection.textContent = "Connection: Testing...";
+  isCodingBackendReady = false;
+codingConnection.textContent = "Connection: Testing...";
 
   try {
     const tagsUrl = LOCAL_BACKEND_URL.replace("/api/chat", "/api/tags");
@@ -223,14 +226,17 @@ async function testCodingConnection() {
       return model.name === LOCAL_MODEL_NAME || model.name.startsWith(LOCAL_MODEL_NAME + ":");
     });
 
-    if (modelExists) {
-      codingConnection.textContent = `Connection: Available (${LOCAL_MODEL_NAME} found)`;
-    } else {
-      codingConnection.textContent = `Connection: Available (but ${LOCAL_MODEL_NAME} not found)`;
-    }
-  } catch (error) {
-    codingConnection.textContent = "Connection: Unavailable";
-  }
+   if (modelExists) {
+  isCodingBackendReady = true;
+  codingConnection.textContent = `Connection: Available (${LOCAL_MODEL_NAME} found)`;
+} else {
+  isCodingBackendReady = false;
+  codingConnection.textContent = `Connection: Available (but ${LOCAL_MODEL_NAME} not found)`;
+}
+ } catch (error) {
+  isCodingBackendReady = false;
+  codingConnection.textContent = "Connection: Unavailable";
+}
 }
 async function getCodingAnalysis(code) {
   if (USE_LOCAL_BACKEND) {
@@ -288,7 +294,11 @@ toggleCodingModeButton.addEventListener("click", async function () {
     analysisResult.textContent = "Please paste some code before analyzing.";
     return;
   }
-
+  
+if (USE_LOCAL_BACKEND && !isCodingBackendReady) {
+  analysisResult.textContent = "Local backend is not ready. Please switch to Local and wait for a successful connection.";
+  return;
+}
   analyzeButton.disabled = true;
   analysisResult.textContent = USE_LOCAL_BACKEND
     ? "Ollama is analyzing your code..."
