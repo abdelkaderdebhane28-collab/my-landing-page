@@ -60,8 +60,24 @@
   border-radius: 14px;
   margin-bottom: 12px;
   max-width: 85%;
+  position: relative;
+}
+.copy-button {
+  display: block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(59, 115, 217, 0.12);
+  color: #234;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
+.copy-button:hover {
+  background: rgba(59, 115, 217, 0.2);
+}
 .ai-message {
   background: #eef4ff;
   color: #234;
@@ -246,11 +262,33 @@ let wasRequestStoppedByUser = false;
   chatBox.innerHTML = "";
 
   messages.forEach((item) => {
-    const message = document.createElement("div");
-    message.className = `message ${item.type}`;
-    message.textContent = item.text;
-    chatBox.appendChild(message);
+  const message = document.createElement("div");
+  message.className = `message ${item.type}`;
+
+ const messageText = document.createElement("span");
+messageText.textContent = item.text;
+message.appendChild(messageText);
+
+if (item.type === "ai-message") {
+  const copyButton = document.createElement("button");
+  copyButton.textContent = "Copy";
+  copyButton.className = "copy-button";
+  copyButton.type = "button";
+
+  copyButton.addEventListener("click", function () {
+    navigator.clipboard.writeText(item.text);
+    copyButton.textContent = "Copied";
+
+    setTimeout(function () {
+      copyButton.textContent = "Copy";
+    }, 1200);
   });
+
+  message.appendChild(copyButton);
+}
+
+chatBox.appendChild(message);
+});
 
   chatCount.textContent = `Messages: ${messages.length}`;
   chatBox.scrollTop = chatBox.scrollHeight;
