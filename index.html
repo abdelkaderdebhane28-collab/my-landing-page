@@ -68,6 +68,9 @@
   opacity: 1;
   background: rgba(255, 255, 255, 0.12);
 }
+.nav-links a.active {
+  background: rgba(255, 255, 255, 0.18);
+}
 
     .hero {
       min-height: 100vh;
@@ -309,11 +312,11 @@
   </style>
 </head>
 <body>
-  <nav class="navbar">
+ <nav class="navbar">
     <div class="nav-logo">MyLogo</div>
     <div class="nav-links">
-      <a href="#">Home</a>
-     <a href="about.html">About</a>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
       <a href="tools.html">Tools</a>
     </div>
   </nav>
@@ -325,10 +328,10 @@
   A modern starting point for creating a local AI experience powered by Ollama, smart tools, and step-by-step development.
 </p>
 
-      <<div class="buttons">
-  <button class="button" onclick="showStart()">Start Building</button>
-  <button class="button" onclick="showInfo()">See the Vision</button>
-</div>
+     <div class="buttons">
+        <a href="tools.html" class="button">Start Building</a>
+        <a href="about.html" class="button">See the Vision</a>
+      </div>
 
       <section class="info-section fade-in" id="why-choose-us" style="transition-delay: 0.1s;">
         <h2>Why Build with Us</h2>
@@ -355,7 +358,7 @@
       </section>
 
       <section class="contact-section fade-in" id="contact-us" style="transition-delay: 0.3s;">
-        <<h2>Start Your Local AI Project</h2>
+        <h2>Start Your Local AI Project</h2>
         <p>
   Want to build your own local AI experience? Send us a message and start the journey toward a smarter, private, and more powerful platform.
 </p>
@@ -384,15 +387,7 @@
     </div>
   </section>
 
-  <script>
-  function showStart() {
-  alert("Start building your local AI platform step by step 🚀");
-}
-
-function showInfo() {
-  alert("This project is the first step toward a complete local AI platform powered by Ollama.");
-}
-
+ <script>
   document.getElementById("contactForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
