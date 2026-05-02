@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Analysis - Local AI Platform</title>
+  <style>
+  body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+      color: #333;
+      margin: 0;
+      padding: 0 20px 40px;
+      text-align: center;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(59, 115, 217, 0.95);
+      color: white;
+      padding: 18px 28px;
+      border-radius: 20px;
+      margin: 20px auto 30px;
+      max-width: 900px;
+      width: 92%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 30px rgba(59, 115, 217, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: background-color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-links a.active {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 18px;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(59, 115, 217, 0.08);
+    }
+
+    .eyebrow {
+      color: #3b73d9;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      color: #3b73d9;
+      font-size: 2.2rem;
+      margin: 0 0 16px;
+    }
+
+    .lead {
+      color: #555;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .upload-zone {
+      margin-top: 30px;
+      padding: 40px 20px;
+      border: 2px dashed #b8cdf0;
+      border-radius: 16px;
+      background: #f9fbff;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .upload-zone:hover {
+      border-color: #3b73d9;
+      background: #f0f5ff;
+    }
+
+    .upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .upload-label {
+      display: inline-block;
+      background: #3b73d9;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.25s ease;
+      margin-top: 12px;
+    }
+
+    .upload-label:hover {
+      background: #2f5fb8;
+    }
+
+    .upload-input {
+      display: none;
+    }
+
+    .file-info {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: #eef3ff;
+      border-radius: 10px;
+      color: #333;
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+    }
+
+    .file-info.visible {
+      display: block;
+    }
+
+    .file-info strong {
+      color: #3b73d9;
+    }
+    .file-preview {
+      margin-top: 20px;
+      padding: 18px;
+      background: #1e1e2e;
+      color: #e0e0e0;
+      border-radius: 12px;
+      text-align: left;
+      font-family: "Courier New", Consolas, monospace;
+      font-size: 0.9rem;
+      max-height: 400px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: none;
+    }
+
+    .file-preview.visible {
+      display: block;
+    }
+
+    .preview-header {
+      display: none;
+      margin-top: 24px;
+      font-weight: 600;
+      color: #3b73d9;
+      text-align: left;
+    }
+
+    .preview-header.visible {
+      display: block;
+    }
+
+    .file-warning {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: #fff4e5;
+      border-left: 4px solid #ff9800;
+      border-radius: 8px;
+      color: #6b4500;
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+    }
+
+         .file-warning.visible {
+ display: block;
+    }
+    .controls {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: #3b73d9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s ease, opacity 0.25s ease;
+    }
+
+    .btn:hover {
+      background: #2f5fb8;
+    }
+
+    .btn:disabled {
+      background: #b8cdf0;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #e0e8f5;
+      color: #2f5fb8;
+    }
+
+    .btn-secondary:hover {
+      background: #cfd9ed;
+    }
+
+    .status-info {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .status-info span {
+      font-weight: 600;
+      color: #3b73d9;
+    }
+
+    .model-select {
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    .model-select select {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #b8cdf0;
+      font-size: 0.95rem;
+      background: white;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .analysis-box {
+      margin-top: 24px;
+      padding: 20px;
+      background: #f9fbff;
+      border-left: 4px solid #3b73d9;
+      border-radius: 12px;
+      text-align: left;
+      color: #333;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: none;
+    }
+
+    .analysis-box.visible {
+      display: block;
+    }
+
+    .analysis-header {
+      display: none;
+      margin-top: 28px;
+      font-weight: 600;
+      color: #3b73d9;
+      text-align: left;
+    }
+
+    .analysis-header.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">MyLogo</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html" class="active">Tools</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="eyebrow">FILE ANALYSIS</div>
+    <h1>File Analysis Tool</h1>
+  <p class="lead">
+      A local AI tool for reading project files and extracting useful insights using Ollama.
+    </p>
+
+    <div class="status-info">
+      Mode: <span id="modeStatus">Demo</span> &nbsp;|&nbsp;
+      Connection: <span id="connectionStatus">Not tested</span>
+    </div>
+
+    <div class="model-select">
+      <label for="modelSelect"><strong>Select model:</strong></label>
+      <select id="modelSelect">
+        <option value="gemma3:latest">gemma3:latest</option>
+        <option value="devstral:latest">devstral:latest</option>
+      </select>
+    </div>
+
+    <div class="controls">
+      <button id="toggleModeBtn" class="btn btn-secondary" type="button">Switch to Local</button>
+      <button id="testConnectionBtn" class="btn btn-secondary" type="button">Test Connection</button>
+    </div>
+
+    <div class="upload-zone">
+      <div class="upload-icon">📁</div>
+      <p class="lead">Choose a file to analyze</p>
+
+      <label for="fileInput" class="upload-label">Select File</label>
+      <input type="file" id="fileInput" class="upload-input" />
+
+   <div id="fileInfo" class="file-info">
+        <strong>File:</strong> <span id="fileName">-</span><br>
+        <strong>Size:</strong> <span id="fileSize">-</span><br>
+        <strong>Type:</strong> <span id="fileType">-</span>
+      </div>
+
+      <div id="fileWarning" class="file-warning">
+        ⚠️ This file type is not supported for preview. Only text files can be analyzed for now.
+      </div>
+    </div>
+
+   <div id="previewHeader" class="preview-header">📄 File content preview:</div>
+    <pre id="filePreview" class="file-preview"></pre>
+
+    <div class="controls" id="analyzeControls" style="display: none;">
+      <button id="analyzeBtn" class="btn" type="button">🤖 Analyze with AI</button>
+      <button id="stopBtn" class="btn btn-secondary" type="button" disabled>Stop</button>
+    </div>
+
+    <div id="analysisHeader" class="analysis-header">🧠 AI Analysis:</div>
+    <div id="analysisBox" class="analysis-box"></div>
+  </div>
+
+<script>
+  // === Elements ===
+  const fileInput = document.getElementById("fileInput");
+  const fileInfo = document.getElementById("fileInfo");
+  const fileName = document.getElementById("fileName");
+  const fileSize = document.getElementById("fileSize");
+  const fileType = document.getElementById("fileType");
+  const fileWarning = document.getElementById("fileWarning");
+  const previewHeader = document.getElementById("previewHeader");
+  const filePreview = document.getElementById("filePreview");
+  const analyzeControls = document.getElementById("analyzeControls");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const analysisHeader = document.getElementById("analysisHeader");
+  const analysisBox = document.getElementById("analysisBox");
+  const modeStatus = document.getElementById("modeStatus");
+  const connectionStatus = document.getElementById("connectionStatus");
+  const toggleModeBtn = document.getElementById("toggleModeBtn");
+  const testConnectionBtn = document.getElementById("testConnectionBtn");
+  const modelSelect = document.getElementById("modelSelect");
+
+  // === Config ===
+  const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
+  const OLLAMA_TAGS_URL = "http://localhost:11434/api/tags";
+  let useLocalBackend = false;
+  let currentFileContent = "";
+  let currentFileName = "";
+  let abortController = null;
+
+  // === Load saved model ===
+  const savedModel = localStorage.getItem("fileAnalysisModel");
+  if (savedModel) modelSelect.value = savedModel;
+
+  modelSelect.addEventListener("change", function () {
+    localStorage.setItem("fileAnalysisModel", modelSelect.value);
+  });
+
+  // === File handling ===
+  const supportedExtensions = [
+    "txt", "html", "htm", "css", "js", "json",
+    "md", "csv", "xml", "yml", "yaml", "log"
+  ];
+
+  function isTextFile(file) {
+    const extension = file.name.split(".").pop().toLowerCase();
+    if (supportedExtensions.includes(extension)) return true;
+    if (file.type.startsWith("text/")) return true;
+    return false;
+  }
+
+  fileInput.addEventListener("change", function () {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    fileName.textContent = file.name;
+    fileSize.textContent = (file.size / 1024).toFixed(2) + " KB";
+    fileType.textContent = file.type || "Unknown";
+    fileInfo.classList.add("visible");
+
+    fileWarning.classList.remove("visible");
+    previewHeader.classList.remove("visible");
+    filePreview.classList.remove("visible");
+    analyzeControls.style.display = "none";
+    analysisHeader.classList.remove("visible");
+    analysisBox.classList.remove("visible");
+    filePreview.textContent = "";
+    analysisBox.textContent = "";
+    currentFileContent = "";
+    currentFileName = "";
+
+    if (!isTextFile(file)) {
+      fileWarning.textContent = "⚠️ This file type is not supported for preview. Only text files can be analyzed for now.";
+      fileWarning.classList.add("visible");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      currentFileContent = e.target.result;
+      currentFileName = file.name;
+      filePreview.textContent = currentFileContent;
+      previewHeader.classList.add("visible");
+      filePreview.classList.add("visible");
+      analyzeControls.style.display = "flex";
+    };
+    reader.onerror = function () {
+      fileWarning.textContent = "❌ Failed to read this file.";
+      fileWarning.classList.add("visible");
+    };
+    reader.readAsText(file);
+  });
+
+  // === Mode toggle ===
+  toggleModeBtn.addEventListener("click", function () {
+    if (window.location.protocol === "file:") {
+      useLocalBackend = false;
+      connectionStatus.textContent = "Please open with Live Server";
+      modeStatus.textContent = "Demo";
+      toggleModeBtn.textContent = "Use Live Server";
+      return;
+    }
+    useLocalBackend = !useLocalBackend;
+    modeStatus.textContent = useLocalBackend ? "Local Backend" : "Demo";
+    toggleModeBtn.textContent = useLocalBackend ? "Switch to Demo" : "Switch to Local";
+    connectionStatus.textContent = useLocalBackend ? "Not tested" : "Demo mode active";
+  });
+
+  if (window.location.protocol === "file:") {
+    connectionStatus.textContent = "Please open with Live Server";
+    toggleModeBtn.textContent = "Use Live Server";
+  }
+
+  // === Test connection ===
+  testConnectionBtn.addEventListener("click", async function () {
+    if (!useLocalBackend) {
+      connectionStatus.textContent = "Demo mode active";
+      return;
+    }
+    connectionStatus.textContent = "Testing...";
+    try {
+      const res = await fetch(OLLAMA_TAGS_URL);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      const models = (data.models || []).map(m => m.name);
+      const selected = modelSelect.value;
+      if (models.includes(selected)) {
+        connectionStatus.textContent = `Available (${selected} found)`;
+      } else {
+        connectionStatus.textContent = `Available, but ${selected} not installed`;
+      }
+    } catch (err) {
+      connectionStatus.textContent = "Unavailable - Is Ollama running?";
+    }
+  });
+
+  // === Analyze ===
+  analyzeBtn.addEventListener("click", async function () {
+    if (!currentFileContent) return;
+
+    analysisBox.textContent = "";
+    analysisHeader.classList.add("visible");
+    analysisBox.classList.add("visible");
+    analyzeBtn.disabled = true;
+    stopBtn.disabled = false;
+
+    if (!useLocalBackend) {
+      analysisBox.textContent =
+        `📋 Demo Analysis of "${currentFileName}":\n\n` +
+        `• File length: ${currentFileContent.length} characters\n` +
+        `• Number of lines: ${currentFileContent.split("\n").length}\n\n` +
+        `(Switch to Local Backend and ensure Ollama is running for a real AI analysis.)`;
+      analyzeBtn.disabled = false;
+      stopBtn.disabled = true;
+      return;
+    }
+
+    abortController = new AbortController();
+    const prompt =
+      `Analyze the following file named "${currentFileName}". ` +
+      `Provide: 1) what this file is about, 2) any issues or improvements you notice, 3) a brief summary.\n\n` +
+      `--- FILE CONTENT START ---\n${currentFileContent}\n--- FILE CONTENT END ---`;
+
+    try {
+      const res = await fetch(LOCAL_BACKEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: modelSelect.value,
+          stream: false,
+          messages: [
+            { role: "system", content: "You are a helpful assistant that analyzes files clearly and concisely." },
+            { role: "user", content: prompt }
+          ]
+        }),
+        signal: abortController.signal
+      });
+
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      const reply = data.message && data.message.content ? data.message.content : "(empty response)";
+      analysisBox.textContent = reply;
+    } catch (err) {
+      if (err.name === "AbortError") {
+        analysisBox.textContent = "⏸ Analysis stopped by user.";
+      } else {
+        analysisBox.textContent = "❌ Error: " + err.message + "\n\nMake sure Ollama is running and the model is installed.";
+      }
+    } finally {
+      analyzeBtn.disabled = false;
+      stopBtn.disabled = true;
+      abortController = null;
+    }
+  });
+
+  stopBtn.addEventListener("click", function () {
+    if (abortController) abortController.abort();
+  });
+</script>
+
+</body>
+</html>
