@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Support - Local AI Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+      color: #333;
+      margin: 0;
+      padding: 0 20px 40px;
+      text-align: center;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(59, 115, 217, 0.95);
+      color: white;
+      padding: 18px 28px;
+      border-radius: 20px;
+      margin: 20px auto 30px;
+      max-width: 900px;
+      width: 92%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 30px rgba(59, 115, 217, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: background-color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-links a.active {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(59, 115, 217, 0.08);
+    }
+
+    .eyebrow {
+      color: #3b73d9;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      color: #3b73d9;
+      font-size: 2.2rem;
+      margin: 0 0 16px;
+    }
+
+    .lead {
+      color: #555;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+.form-section {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2f5fb8;
+    }
+
+    .idea-input {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 140px;
+      padding: 14px;
+      border: 2px solid #b8cdf0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #333;
+      background: #f9fbff;
+      resize: vertical;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .idea-input:focus {
+      outline: none;
+      border-color: #3b73d9;
+      background: white;
+    }
+
+    .input-stats {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #777;
+      text-align: right;
+    }
+
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .option-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .option-group select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 2px solid #b8cdf0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      transition: border-color 0.25s ease;
+    }
+
+    .option-group select:focus {
+      outline: none;
+      border-color: #3b73d9;
+    }
+    .controls {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: #3b73d9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s ease, opacity 0.25s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn:hover {
+      background: #2f5fb8;
+    }
+
+    .btn:disabled {
+      background: #b8cdf0;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #e0e8f5;
+      color: #2f5fb8;
+    }
+
+    .btn-secondary:hover {
+      background: #cfd9ed;
+    }
+
+    .btn-primary-large {
+      background: #3b73d9;
+      padding: 14px 32px;
+      font-size: 1rem;
+    }
+
+    .status-info {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .status-info span {
+      font-weight: 600;
+      color: #3b73d9;
+    }
+
+    .model-select {
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    .model-select select {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #b8cdf0;
+      font-size: 0.95rem;
+      background: white;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .plan-box {
+      margin-top: 24px;
+      padding: 24px;
+      background: #f9fbff;
+      border-left: 4px solid #3b73d9;
+      border-radius: 12px;
+      text-align: left;
+      color: #333;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: none;
+    }
+
+    .plan-box.visible {
+      display: block;
+    }
+
+    .plan-header {
+      display: none;
+      margin-top: 28px;
+      font-weight: 600;
+      color: #3b73d9;
+      text-align: left;
+    }
+
+    .plan-header.visible {
+      display: block;
+    }
+
+    .error-message {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #ffe5e5;
+      border-left: 4px solid #d9534f;
+      border-radius: 8px;
+      color: #842029;
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 18px;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">MyLogo</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html" class="active">Tools</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="eyebrow">PROJECT SUPPORT</div>
+    <h1>Project Planner</h1>
+  <p class="lead">
+      Describe your project idea, and let local AI generate a clear plan with steps, technologies, and timeline.
+    </p>
+
+    <div class="status-info">
+      Mode: <span id="modeStatus">Demo</span> &nbsp;|&nbsp;
+      Connection: <span id="connectionStatus">Not tested</span>
+    </div>
+
+    <div class="model-select">
+      <label for="modelSelect"><strong>Select model:</strong></label>
+      <select id="modelSelect">
+        <option value="gemma3:latest">gemma3:latest</option>
+        <option value="devstral:latest">devstral:latest</option>
+      </select>
+    </div>
+
+    <div class="controls">
+      <button id="toggleModeBtn" class="btn btn-secondary" type="button">Switch to Local</button>
+      <button id="testConnectionBtn" class="btn btn-secondary" type="button">Test Connection</button>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label" for="ideaInput">💡 Describe your project idea:</label>
+      <textarea
+        id="ideaInput"
+        class="idea-input"
+        placeholder="Example: A web app to track personal expenses with categories, monthly reports, and a clean dashboard..."
+      ></textarea>
+      <div id="ideaStats" class="input-stats">Characters: 0 | Words: 0</div>
+
+      <div class="options-row">
+        <div class="option-group">
+          <label class="form-label" for="experienceLevel">🎯 Your experience level:</label>
+          <select id="experienceLevel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+       <div class="option-group">
+          <label class="form-label" for="timeAvailable">⏱️ Time available:</label>
+          <select id="timeAvailable">
+            <option value="few-days">A few days</option>
+            <option value="few-weeks" selected>A few weeks</option>
+            <option value="few-months">A few months</option>
+            <option value="long-term">Long-term project</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="generateBtn" class="btn btn-primary-large" type="button">🚀 Generate Plan</button>
+        <button id="stopBtn" class="btn btn-secondary" type="button" disabled>Stop</button>
+        <button id="clearPlanBtn" class="btn btn-secondary" type="button">Clear</button>
+      </div>
+
+      <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <div id="planHeader" class="plan-header">📋 Your Project Plan:</div>
+    <div id="planBox" class="plan-box"></div>
+  </div>
+
+<script>
+  // === Elements ===
+  const ideaInput = document.getElementById("ideaInput");
+  const ideaStats = document.getElementById("ideaStats");
+  const experienceLevel = document.getElementById("experienceLevel");
+  const timeAvailable = document.getElementById("timeAvailable");
+  const modeStatus = document.getElementById("modeStatus");
+  const connectionStatus = document.getElementById("connectionStatus");
+  const modelSelect = document.getElementById("modelSelect");
+  const toggleModeBtn = document.getElementById("toggleModeBtn");
+  const testConnectionBtn = document.getElementById("testConnectionBtn");
+  const generateBtn = document.getElementById("generateBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const clearPlanBtn = document.getElementById("clearPlanBtn");
+  const planHeader = document.getElementById("planHeader");
+  const planBox = document.getElementById("planBox");
+  const errorMessage = document.getElementById("errorMessage");
+
+  // === Config ===
+  const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
+  const OLLAMA_TAGS_URL = "http://localhost:11434/api/tags";
+  let useLocalBackend = false;
+  let abortController = null;
+
+  // === Live stats ===
+  function updateIdeaStats() {
+    const text = ideaInput.value;
+    const charCount = text.length;
+    const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+    ideaStats.textContent = `Characters: ${charCount} | Words: ${wordCount}`;
+  }
+  ideaInput.addEventListener("input", updateIdeaStats);
+
+  // === Load saved model + last plan ===
+  const savedModel = localStorage.getItem("projectPlannerModel");
+  if (savedModel) modelSelect.value = savedModel;
+
+  modelSelect.addEventListener("change", function () {
+    localStorage.setItem("projectPlannerModel", modelSelect.value);
+  });
+
+  const savedPlan = localStorage.getItem("projectPlannerLastPlan");
+  if (savedPlan) {
+    planBox.textContent = savedPlan;
+    planHeader.classList.add("visible");
+    planBox.classList.add("visible");
+  }
+
+  // === Mode toggle ===
+  toggleModeBtn.addEventListener("click", function () {
+    if (window.location.protocol === "file:") {
+      useLocalBackend = false;
+      connectionStatus.textContent = "Please open with Live Server";
+      modeStatus.textContent = "Demo";
+      toggleModeBtn.textContent = "Use Live Server";
+      return;
+    }
+    useLocalBackend = !useLocalBackend;
+    modeStatus.textContent = useLocalBackend ? "Local Backend" : "Demo";
+    toggleModeBtn.textContent = useLocalBackend ? "Switch to Demo" : "Switch to Local";
+    connectionStatus.textContent = useLocalBackend ? "Not tested" : "Demo mode active";
+  });
+
+  if (window.location.protocol === "file:") {
+    connectionStatus.textContent = "Please open with Live Server";
+    toggleModeBtn.textContent = "Use Live Server";
+  }
+
+  // === Test connection ===
+  testConnectionBtn.addEventListener("click", async function () {
+    if (!useLocalBackend) {
+      connectionStatus.textContent = "Demo mode active";
+      return;
+    }
+    connectionStatus.textContent = "Testing...";
+    try {
+      const res = await fetch(OLLAMA_TAGS_URL);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      const models = (data.models || []).map(m => m.name);
+      const selected = modelSelect.value;
+      if (models.includes(selected)) {
+        connectionStatus.textContent = `Available (${selected} found)`;
+      } else {
+        connectionStatus.textContent = `Available, but ${selected} not installed`;
+      }
+    } catch (err) {
+      connectionStatus.textContent = "Unavailable - Is Ollama running?";
+    }
+  });
+
+  // === Build prompt ===
+  function buildPrompt(idea, experience, time) {
+    const expMap = {
+      "beginner": "a beginner",
+      "intermediate": "an intermediate developer",
+      "advanced": "an advanced developer"
+    };
+    const timeMap = {
+      "few-days": "a few days",
+      "few-weeks": "a few weeks",
+      "few-months": "a few months",
+      "long-term": "a long-term effort (6+ months)"
+    };
+
+    return `You are a senior project planner. The user is ${expMap[experience]} with ${timeMap[time]} available.
+
+Project idea:
+${idea}
+
+Generate a clear, structured plan with the following sections:
+
+1. **Project Summary** (2-3 sentences)
+2. **Recommended Tech Stack** (list with brief reasoning)
+3. **Step-by-Step Plan** (numbered, ordered by priority)
+4. **Potential Risks & Challenges** (what to watch out for)
+5. **Estimated Timeline** (realistic for the user's available time)
+6. **First Concrete Step** (what to do today/this week)
+
+Be practical and concise. Match the depth to the user's experience level.`;
+  }
+
+  // === Demo plan ===
+  function buildDemoPlan(idea, experience, time) {
+    return `📋 Demo Plan (Switch to Local Backend for real AI generation)
+
+**Project Summary**
+You described: "${idea.slice(0, 120)}${idea.length > 120 ? "..." : ""}"
+
+**Recommended Tech Stack**
+- Frontend: HTML / CSS / JavaScript
+- Backend (if needed): Node.js or Python
+- Database (if needed): SQLite for simple, PostgreSQL for serious
+
+**Step-by-Step Plan**
+1. Define the scope clearly (1 day)
+2. Sketch the UI on paper
+3. Build the basic structure
+4. Add the core feature
+5. Test, polish, deploy
+
+**Potential Risks**
+- Scope creep (adding too many features)
+- Underestimating the time needed
+- Skipping testing
+
+**Estimated Timeline**
+Based on "${time}" — plan for shorter phases and iterate.
+
+**First Concrete Step**
+Open a new file and write down 3 must-have features. Nothing more.
+
+(Switch to Local Backend with Ollama running for a real, tailored AI plan.)`;
+  }
+
+  // === Generate ===
+  generateBtn.addEventListener("click", async function () {
+    const idea = ideaInput.value.trim();
+    errorMessage.classList.remove("visible");
+
+    if (idea.length < 10) {
+      errorMessage.textContent = "⚠️ Please describe your idea in at least 10 characters.";
+      errorMessage.classList.add("visible");
+      return;
+    }
+
+    planBox.textContent = "";
+    planHeader.classList.add("visible");
+    planBox.classList.add("visible");
+    generateBtn.disabled = true;
+    stopBtn.disabled = false;
+
+    if (!useLocalBackend) {
+      planBox.textContent = buildDemoPlan(idea, experienceLevel.value, timeAvailable.value);
+      localStorage.setItem("projectPlannerLastPlan", planBox.textContent);
+      generateBtn.disabled = false;
+      stopBtn.disabled = true;
+      return;
+    }
+
+    planBox.textContent = "⏳ Generating plan with " + modelSelect.value + "...";
+    abortController = new AbortController();
+    const prompt = buildPrompt(idea, experienceLevel.value, timeAvailable.value);
+
+    try {
+      const res = await fetch(LOCAL_BACKEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: modelSelect.value,
+          stream: false,
+          messages: [
+            { role: "system", content: "You are a helpful project planning assistant that produces clear, structured, practical plans." },
+            { role: "user", content: prompt }
+          ]
+        }),
+        signal: abortController.signal
+      });
+
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      const reply = data.message && data.message.content ? data.message.content : "(empty response)";
+      planBox.textContent = reply;
+      localStorage.setItem("projectPlannerLastPlan", reply);
+    } catch (err) {
+      if (err.name === "AbortError") {
+        planBox.textContent = "⏸ Generation stopped by user.";
+      } else {
+        planBox.textContent = "";
+        errorMessage.textContent = "❌ Error: " + err.message + ". Make sure Ollama is running and the model is installed.";
+        errorMessage.classList.add("visible");
+        planHeader.classList.remove("visible");
+        planBox.classList.remove("visible");
+      }
+    } finally {
+      generateBtn.disabled = false;
+      stopBtn.disabled = true;
+      abortController = null;
+    }
+  });
+
+  stopBtn.addEventListener("click", function () {
+    if (abortController) abortController.abort();
+  });
+
+  clearPlanBtn.addEventListener("click", function () {
+    planBox.textContent = "";
+    planBox.classList.remove("visible");
+    planHeader.classList.remove("visible");
+    errorMessage.classList.remove("visible");
+    localStorage.removeItem("projectPlannerLastPlan");
+  });
+</script>
+
+</body>
+</html>
