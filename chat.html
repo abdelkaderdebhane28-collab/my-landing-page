@@ -148,35 +148,91 @@
       color: white;
       margin-left: auto;
     }
-    .chat-input-area {
-      display: flex;
-      gap: 12px;
-      max-width: 760px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .chat-input-area input {
-      flex: 1;
-      padding: 14px 16px;
-      border: 1px solid #cfd8ea;
-      border-radius: 14px;
-      font-size: 1rem;
-    }
-    .chat-input-area button {
-      border: none;
-      padding: 14px 22px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #3b73d9, #295bb3);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .chat-input-area button:disabled,
-    .chat-input-area input:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
+   .chat-input-area {
+    display: flex;
+    gap: 12px;
+    max-width: 760px;
+    margin: 0 auto 12px;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .chat-input-area input {
+    flex: 1 1 100%;
+    padding: 14px 16px;
+    border: 1px solid #cfd8ea;
+    border-radius: 14px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 760px;
+    margin: 8px auto;
+    justify-content: center;
+  }
+
+  .button-row.primary {
+    margin-bottom: 16px;
+  }
+
+  .button-row .btn {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.25s ease, opacity 0.25s ease;
+  }
+
+  .button-row .btn-primary {
+    background: linear-gradient(135deg, #3b73d9, #295bb3);
+    color: white;
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
+
+  .button-row .btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4b84ee, #2f63c2);
+  }
+
+  .button-row .btn-secondary {
+    background: rgba(59, 115, 217, 0.12);
+    color: #234;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .button-row .btn-secondary:hover:not(:disabled) {
+    background: rgba(59, 115, 217, 0.2);
+  }
+
+  .button-row .btn-stop {
+    background: #f7e7e7;
+    color: #842029;
+    padding: 14px 18px;
+  }
+
+  .button-row .btn-stop:hover:not(:disabled) {
+    background: #f5d5d5;
+  }
+
+  .button-row .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .button-group-label {
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
+    margin: 4px 0 0;
+    letter-spacing: 0.5px;
+  }
     .back-link {
       display: inline-block;
       margin-top: 6px;
@@ -187,11 +243,7 @@
     .back-link:hover {
       text-decoration: underline;
     }
-    #clearButton {
-      background: #e9eefc;
-      color: #234;
-      border: 1px solid #cfd8ea;
-    }
+   
   </style>
 </head>
 <body>
@@ -236,16 +288,27 @@
       <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
     </div>
 
-    <div class="chat-input-area">
+  <div class="chat-input-area">
       <input id="chatInput" type="text" placeholder="Type your message here..." />
-      <button id="sendButton">Send</button>
-      <button id="stopButton" type="button">Stop</button>
-      <button id="newChatButton" type="button">New Chat</button>
-      <button id="clearButton" type="button">Clear</button>
-      <button id="resetButton" type="button">Reset</button>
-      <button id="exportButton" type="button">Export</button>
-      <button id="testConnectionButton" type="button">Test Connection</button>
-      <button id="toggleModeButton" type="button">Switch to Local</button>
+    </div>
+
+    <div class="button-row primary">
+      <button id="sendButton" class="btn btn-primary">Send</button>
+      <button id="stopButton" type="button" class="btn btn-stop">Stop</button>
+    </div>
+
+    <p class="button-group-label">CHAT MANAGEMENT</p>
+    <div class="button-row">
+      <button id="newChatButton" type="button" class="btn btn-secondary">New Chat</button>
+      <button id="clearButton" type="button" class="btn btn-secondary">Clear</button>
+      <button id="resetButton" type="button" class="btn btn-secondary">Reset</button>
+      <button id="exportButton" type="button" class="btn btn-secondary">Export</button>
+    </div>
+
+    <p class="button-group-label">CONNECTION</p>
+    <div class="button-row">
+      <button id="testConnectionButton" type="button" class="btn btn-secondary">Test Connection</button>
+      <button id="toggleModeButton" type="button" class="btn btn-secondary">Switch to Local</button>
     </div>
   </div>
 
