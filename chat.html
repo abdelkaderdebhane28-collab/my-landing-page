@@ -5,14 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local Chat - Local AI Platform</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
-      color: #333;
-      margin: 0;
-      padding: 40px 20px;
-      text-align: center;
+   body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+    color: #333;
+    margin: 0;
+    padding: 0 20px 40px;
+    text-align: center;
+  }
+
+  .navbar {
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: rgba(59, 115, 217, 0.95);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 20px;
+    margin: 20px auto 0;
+    max-width: 900px;
+    width: 92%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 30px rgba(59, 115, 217, 0.18);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: transparent;
+    transition: background-color 0.25s ease;
+  }
+
+  .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .nav-links a.active {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  @media (max-width: 700px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px 18px;
     }
+    .nav-links {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+  }
     .container {
       background: rgba(255, 255, 255, 0.96);
       border: 1px solid #eef2ff;
@@ -131,6 +195,15 @@
   </style>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-logo">MyLogo</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html" class="active">Tools</a>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="eyebrow">LOCAL CHAT</div>
     <h1>Local AI Chat</h1>
