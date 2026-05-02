@@ -370,6 +370,8 @@
     <div id="analysisBox" class="analysis-box"></div>
   </div>
 
+<script src="shared-settings.js"></script>
+
 <script>
   // === Elements ===
   const fileInput = document.getElementById("fileInput");
@@ -391,20 +393,23 @@
   const testConnectionBtn = document.getElementById("testConnectionBtn");
   const modelSelect = document.getElementById("modelSelect");
 
-  // === Config ===
-  const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-  const OLLAMA_TAGS_URL = "http://localhost:11434/api/tags";
-  let useLocalBackend = false;
+ // === Config (using SharedSettings) ===
   let currentFileContent = "";
   let currentFileName = "";
   let abortController = null;
 
-  // === Load saved model ===
-  const savedModel = localStorage.getItem("fileAnalysisModel");
-  if (savedModel) modelSelect.value = savedModel;
+  // === Initialize from SharedSettings ===
+  modelSelect.value = SharedSettings.getModel();
+
+  // Update mode UI from saved state
+  if (SharedSettings.isLocal()) {
+    modeStatus.textContent = "Local Backend";
+    toggleModeBtn.textContent = "Switch to Demo";
+    connectionStatus.textContent = "Not tested";
+  }
 
   modelSelect.addEventListener("change", function () {
-    localStorage.setItem("fileAnalysisModel", modelSelect.value);
+    SharedSettings.setModel(modelSelect.value);
   });
 
   // === File handling ===
@@ -462,46 +467,43 @@
     reader.readAsText(file);
   });
 
-  // === Mode toggle ===
+ // === Mode toggle (uses SharedSettings) ===
   toggleModeBtn.addEventListener("click", function () {
-    if (window.location.protocol === "file:") {
-      useLocalBackend = false;
+    if (SharedSettings.isFileProtocol()) {
+      SharedSettings.setMode("demo");
       connectionStatus.textContent = "Please open with Live Server";
       modeStatus.textContent = "Demo";
       toggleModeBtn.textContent = "Use Live Server";
       return;
     }
-    useLocalBackend = !useLocalBackend;
-    modeStatus.textContent = useLocalBackend ? "Local Backend" : "Demo";
-    toggleModeBtn.textContent = useLocalBackend ? "Switch to Demo" : "Switch to Local";
-    connectionStatus.textContent = useLocalBackend ? "Not tested" : "Demo mode active";
+    const newMode = SharedSettings.isLocal() ? "demo" : "local";
+    SharedSettings.setMode(newMode);
+    modeStatus.textContent = newMode === "local" ? "Local Backend" : "Demo";
+    toggleModeBtn.textContent = newMode === "local" ? "Switch to Demo" : "Switch to Local";
+    connectionStatus.textContent = newMode === "local" ? "Not tested" : "Demo mode active";
   });
 
-  if (window.location.protocol === "file:") {
+  if (SharedSettings.isFileProtocol()) {
     connectionStatus.textContent = "Please open with Live Server";
     toggleModeBtn.textContent = "Use Live Server";
   }
 
-  // === Test connection ===
+ // === Test connection (uses SharedSettings) ===
   testConnectionBtn.addEventListener("click", async function () {
-    if (!useLocalBackend) {
+    if (!SharedSettings.isLocal()) {
       connectionStatus.textContent = "Demo mode active";
       return;
     }
     connectionStatus.textContent = "Testing...";
-    try {
-      const res = await fetch(OLLAMA_TAGS_URL);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      const models = (data.models || []).map(m => m.name);
-      const selected = modelSelect.value;
-      if (models.includes(selected)) {
-        connectionStatus.textContent = `Available (${selected} found)`;
-      } else {
-        connectionStatus.textContent = `Available, but ${selected} not installed`;
-      }
-    } catch (err) {
+    const result = await SharedSettings.testConnection();
+    if (!result.ok) {
       connectionStatus.textContent = "Unavailable - Is Ollama running?";
+      return;
+    }
+    if (result.modelFound) {
+      connectionStatus.textContent = `Available (${result.selectedModel} found)`;
+    } else {
+      connectionStatus.textContent = `Available, but ${result.selectedModel} not installed`;
     }
   });
 
@@ -515,7 +517,7 @@
     analyzeBtn.disabled = true;
     stopBtn.disabled = false;
 
-    if (!useLocalBackend) {
+   if (!SharedSettings.isLocal()) {
       analysisBox.textContent =
         `📋 Demo Analysis of "${currentFileName}":\n\n` +
         `• File length: ${currentFileContent.length} characters\n` +
@@ -533,7 +535,7 @@
       `--- FILE CONTENT START ---\n${currentFileContent}\n--- FILE CONTENT END ---`;
 
     try {
-      const res = await fetch(LOCAL_BACKEND_URL, {
+     const res = await fetch(SharedSettings.LOCAL_BACKEND_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

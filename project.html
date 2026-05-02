@@ -370,6 +370,8 @@
     <div id="planBox" class="plan-box"></div>
   </div>
 
+<script src="shared-settings.js"></script>
+
 <script>
   // === Elements ===
   const ideaInput = document.getElementById("ideaInput");
@@ -388,10 +390,7 @@
   const planBox = document.getElementById("planBox");
   const errorMessage = document.getElementById("errorMessage");
 
-  // === Config ===
-  const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-  const OLLAMA_TAGS_URL = "http://localhost:11434/api/tags";
-  let useLocalBackend = false;
+ // === Config (using SharedSettings) ===
   let abortController = null;
 
   // === Live stats ===
@@ -403,14 +402,20 @@
   }
   ideaInput.addEventListener("input", updateIdeaStats);
 
-  // === Load saved model + last plan ===
-  const savedModel = localStorage.getItem("projectPlannerModel");
-  if (savedModel) modelSelect.value = savedModel;
+  // === Initialize from SharedSettings ===
+  modelSelect.value = SharedSettings.getModel();
+
+  if (SharedSettings.isLocal()) {
+    modeStatus.textContent = "Local Backend";
+    toggleModeBtn.textContent = "Switch to Demo";
+    connectionStatus.textContent = "Not tested";
+  }
 
   modelSelect.addEventListener("change", function () {
-    localStorage.setItem("projectPlannerModel", modelSelect.value);
+    SharedSettings.setModel(modelSelect.value);
   });
 
+  // === Load last plan (this stays page-specific) ===
   const savedPlan = localStorage.getItem("projectPlannerLastPlan");
   if (savedPlan) {
     planBox.textContent = savedPlan;
@@ -418,46 +423,43 @@
     planBox.classList.add("visible");
   }
 
-  // === Mode toggle ===
+// === Mode toggle (uses SharedSettings) ===
   toggleModeBtn.addEventListener("click", function () {
-    if (window.location.protocol === "file:") {
-      useLocalBackend = false;
+    if (SharedSettings.isFileProtocol()) {
+      SharedSettings.setMode("demo");
       connectionStatus.textContent = "Please open with Live Server";
       modeStatus.textContent = "Demo";
       toggleModeBtn.textContent = "Use Live Server";
       return;
     }
-    useLocalBackend = !useLocalBackend;
-    modeStatus.textContent = useLocalBackend ? "Local Backend" : "Demo";
-    toggleModeBtn.textContent = useLocalBackend ? "Switch to Demo" : "Switch to Local";
-    connectionStatus.textContent = useLocalBackend ? "Not tested" : "Demo mode active";
+    const newMode = SharedSettings.isLocal() ? "demo" : "local";
+    SharedSettings.setMode(newMode);
+    modeStatus.textContent = newMode === "local" ? "Local Backend" : "Demo";
+    toggleModeBtn.textContent = newMode === "local" ? "Switch to Demo" : "Switch to Local";
+    connectionStatus.textContent = newMode === "local" ? "Not tested" : "Demo mode active";
   });
 
-  if (window.location.protocol === "file:") {
+  if (SharedSettings.isFileProtocol()) {
     connectionStatus.textContent = "Please open with Live Server";
     toggleModeBtn.textContent = "Use Live Server";
   }
 
-  // === Test connection ===
+ // === Test connection (uses SharedSettings) ===
   testConnectionBtn.addEventListener("click", async function () {
-    if (!useLocalBackend) {
+    if (!SharedSettings.isLocal()) {
       connectionStatus.textContent = "Demo mode active";
       return;
     }
     connectionStatus.textContent = "Testing...";
-    try {
-      const res = await fetch(OLLAMA_TAGS_URL);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      const models = (data.models || []).map(m => m.name);
-      const selected = modelSelect.value;
-      if (models.includes(selected)) {
-        connectionStatus.textContent = `Available (${selected} found)`;
-      } else {
-        connectionStatus.textContent = `Available, but ${selected} not installed`;
-      }
-    } catch (err) {
+    const result = await SharedSettings.testConnection();
+    if (!result.ok) {
       connectionStatus.textContent = "Unavailable - Is Ollama running?";
+      return;
+    }
+    if (result.modelFound) {
+      connectionStatus.textContent = `Available (${result.selectedModel} found)`;
+    } else {
+      connectionStatus.textContent = `Available, but ${result.selectedModel} not installed`;
     }
   });
 
@@ -542,7 +544,7 @@ Open a new file and write down 3 must-have features. Nothing more.
     generateBtn.disabled = true;
     stopBtn.disabled = false;
 
-    if (!useLocalBackend) {
+   if (!SharedSettings.isLocal()) {
       planBox.textContent = buildDemoPlan(idea, experienceLevel.value, timeAvailable.value);
       localStorage.setItem("projectPlannerLastPlan", planBox.textContent);
       generateBtn.disabled = false;
@@ -555,7 +557,7 @@ Open a new file and write down 3 must-have features. Nothing more.
     const prompt = buildPrompt(idea, experienceLevel.value, timeAvailable.value);
 
     try {
-      const res = await fetch(LOCAL_BACKEND_URL, {
+     const res = await fetch(SharedSettings.LOCAL_BACKEND_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
