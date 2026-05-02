@@ -233,6 +233,107 @@
     margin: 4px 0 0;
     letter-spacing: 0.5px;
   }
+  .status-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 24px;
+    max-width: 760px;
+    margin: 1rem auto;
+    padding: 14px 20px;
+    background: #f8faff;
+    border: 1px solid #e3ebff;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    color: #555;
+  }
+
+  .status-bar span {
+    color: #234;
+    font-weight: 600;
+  }
+
+  .status-bar .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #b8cdf0;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .status-bar .status-dot.local {
+    background: #5fa84e;
+  }
+
+  details.settings-panel {
+    max-width: 760px;
+    margin: 0 auto 1rem;
+    background: #f8faff;
+    border: 1px solid #e3ebff;
+    border-radius: 14px;
+    padding: 0;
+    text-align: left;
+  }
+
+  details.settings-panel summary {
+    cursor: pointer;
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #3b73d9;
+    list-style: none;
+    user-select: none;
+  }
+
+  details.settings-panel summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details.settings-panel summary::before {
+    content: "▶ ";
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.2s ease;
+  }
+
+  details.settings-panel[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  details.settings-panel .settings-content {
+    padding: 0 18px 14px;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  details.settings-panel .settings-content p {
+    margin: 6px 0;
+    max-width: none;
+  }
+
+  details.settings-panel .settings-content strong {
+    color: #234;
+  }
+
+  details.settings-panel .settings-content select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #cfd8ea;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    margin-left: 6px;
+  }
+
+  details.settings-panel .settings-note {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+  }
     .back-link {
       display: inline-block;
       margin-top: 6px;
@@ -262,25 +363,34 @@
     <p>This page will become the first real chat interface of the local AI platform.</p>
     <p><a href="tools.html" class="back-link">← Back to Tools</a></p>
 
-    <p id="chatStatus" class="lead">Status: Ready</p>
-    <p id="chatMode" class="lead">Mode: Demo</p>
-    <p id="chatModel" class="lead">Model: gemma3:latest</p>
-    <p id="lastRequestModel" class="lead">Last request model: none</p>
-
-    <div class="lead">
-      <label for="modelSelect"><strong>Select model:</strong></label>
-      <select id="modelSelect">
-        <option value="gemma3:latest">gemma3:latest</option>
-        <option value="devstral:latest">devstral:latest</option>
-      </select>
+    <div class="status-bar">
+      <div>
+        <span class="status-dot" id="statusDot"></span>
+        <span id="chatStatus">Status: Ready</span>
+      </div>
+      <div><span id="chatMode">Mode: Demo</span></div>
+      <div><span id="chatModel">Model: gemma3:latest</span></div>
+      <div><span id="chatConnection">Connection: Not tested</span></div>
+      <div><span id="chatCount">Messages: 0</span></div>
     </div>
 
-    <p id="chatSource" class="lead">Response source: Demo replies</p>
-    <p id="chatInstruction" class="lead">Instruction style: Direct and practical</p>
-    <p id="chatContext" class="lead">Context limit: 10</p>
-    <p id="chatConnection" class="lead">Connection: Not tested</p>
-    <p class="lead">Local backend requires Live Server, not file opening.</p>
-    <p id="chatCount" class="lead">Messages: 0</p>
+    <details class="settings-panel">
+      <summary>⚙️ Settings & Details</summary>
+      <div class="settings-content">
+        <p>
+          <strong>Select model:</strong>
+          <select id="modelSelect">
+            <option value="gemma3:latest">gemma3:latest</option>
+            <option value="devstral:latest">devstral:latest</option>
+          </select>
+        </p>
+        <p id="lastRequestModel">Last request model: none</p>
+        <p id="chatSource">Response source: Demo replies</p>
+        <p id="chatInstruction">Instruction style: Direct and practical</p>
+        <p id="chatContext">Context limit: 10</p>
+        <p class="settings-note">💡 Local backend requires Live Server, not file opening.</p>
+      </div>
+    </details>
 
     <div id="chatBox" class="chat-box">
       <div class="message ai-message">Hello! I am your future local AI assistant.</div>
@@ -357,12 +467,17 @@
     let messages = [];
 
     // === UI refresh ===
-    function refreshModeUI() {
+   function refreshModeUI() {
       chatMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
       chatModel.textContent = "Model: " + SharedSettings.getModel();
       chatSource.textContent = USE_LOCAL_BACKEND ? "Response source: Ollama local backend" : "Response source: Demo replies";
       chatInstruction.textContent = "Instruction style: Direct and practical";
       chatContext.textContent = "Context limit: " + MAX_CONTEXT_MESSAGES;
+
+      const statusDot = document.getElementById("statusDot");
+      if (statusDot) {
+        statusDot.classList.toggle("local", USE_LOCAL_BACKEND);
+      }
 
       if (SharedSettings.isFileProtocol()) {
         toggleModeButton.textContent = "Use Live Server";
