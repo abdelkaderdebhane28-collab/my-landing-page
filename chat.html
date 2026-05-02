@@ -5,618 +5,611 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local Chat - Local AI Platform</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
-    color: #333;
-    margin: 0;
-    padding: 40px 20px;
-    text-align: center;
-  }
-.container {
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #eef2ff;
-  border-radius: 28px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
-  padding: 3rem;
-  max-width: 900px;
-  width: 92%;
-  margin: 40px auto;
-  text-align: center;
-}
-.eyebrow {
-  color: #3b73d9;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  margin-bottom: 12px;
-}
- h1 {
-  color: #3b73d9;
-  font-size: 2.6rem;
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-
-  p {
-  max-width: 700px;
-  margin: 0 auto 1.25rem;
-  line-height: 1.8;
-  color: #555;
-  font-size: 1.05rem;
-}
-.chat-box {
-  background: #f8faff;
-  border: 1px solid #e3ebff;
-  border-radius: 18px;
-  padding: 1.5rem;
-  max-width: 760px;
-  margin: 1.5rem auto;
-  text-align: left;
-}
-
-.message {
-  padding: 12px 14px;
-  border-radius: 14px;
-  margin-bottom: 12px;
-  max-width: 85%;
-  position: relative;
-}
-.copy-button {
-  display: block;
-  margin-top: 8px;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(59, 115, 217, 0.12);
-  color: #234;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.copy-button:hover {
-  background: rgba(59, 115, 217, 0.2);
-}
-.ai-message {
-  background: #eef4ff;
-  color: #234;
-}
-
-.user-message {
-  background: #3b73d9;
-  color: white;
-  margin-left: auto;
-}
-
-.chat-input-area {
-  display: flex;
-  gap: 12px;
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.chat-input-area input {
-  flex: 1;
-  padding: 14px 16px;
-  border: 1px solid #cfd8ea;
-  border-radius: 14px;
-  font-size: 1rem;
-}
-
-.chat-input-area button {
-  border: none;
-  padding: 14px 22px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #3b73d9, #295bb3);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
-.chat-input-area button:disabled,
-.chat-input-area input:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-.back-link {
-  display: inline-block;
-  margin-top: 6px;
-  color: #3b73d9;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
-#clearButton {
-  background: #e9eefc;
-  color: #234;
-  border: 1px solid #cfd8ea;
-}
-</style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
+      color: #333;
+      margin: 0;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #eef2ff;
+      border-radius: 28px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+      padding: 3rem;
+      max-width: 900px;
+      width: 92%;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .eyebrow {
+      color: #3b73d9;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      color: #3b73d9;
+      font-size: 2.6rem;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    p {
+      max-width: 700px;
+      margin: 0 auto 1.25rem;
+      line-height: 1.8;
+      color: #555;
+      font-size: 1.05rem;
+    }
+    .chat-box {
+      background: #f8faff;
+      border: 1px solid #e3ebff;
+      border-radius: 18px;
+      padding: 1.5rem;
+      max-width: 760px;
+      margin: 1.5rem auto;
+      text-align: left;
+    }
+    .message {
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      max-width: 85%;
+      position: relative;
+    }
+    .copy-button {
+      display: block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(59, 115, 217, 0.12);
+      color: #234;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .copy-button:hover {
+      background: rgba(59, 115, 217, 0.2);
+    }
+    .ai-message {
+      background: #eef4ff;
+      color: #234;
+    }
+    .user-message {
+      background: #3b73d9;
+      color: white;
+      margin-left: auto;
+    }
+    .chat-input-area {
+      display: flex;
+      gap: 12px;
+      max-width: 760px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .chat-input-area input {
+      flex: 1;
+      padding: 14px 16px;
+      border: 1px solid #cfd8ea;
+      border-radius: 14px;
+      font-size: 1rem;
+    }
+    .chat-input-area button {
+      border: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b73d9, #295bb3);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .chat-input-area button:disabled,
+    .chat-input-area input:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #3b73d9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #clearButton {
+      background: #e9eefc;
+      color: #234;
+      border: 1px solid #cfd8ea;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-  <div class="eyebrow">LOCAL CHAT</div>
-  <h1>Local AI Chat</h1>
-  <p>This page will become the first real chat interface of the local AI platform.</p>
-  <p><a href="tools.html" class="back-link">← Back to Tools</a></p>
-<p id="chatStatus" class="lead">Status: Ready</p>
-<p id="chatMode" class="lead">Mode: Demo</p>
-<p id="chatModel" class="lead">Model: gemma3:latest</p>
-<p id="lastRequestModel" class="lead">Last request model: none</p>
+    <div class="eyebrow">LOCAL CHAT</div>
+    <h1>Local AI Chat</h1>
+    <p>This page will become the first real chat interface of the local AI platform.</p>
+    <p><a href="tools.html" class="back-link">← Back to Tools</a></p>
 
-<div class="lead">
-  <label for="modelSelect"><strong>Select model:</strong></label>
-  <select id="modelSelect">
-    <option value="gemma3:latest">gemma3:latest</option>
-    <option value="devstral:latest">devstral:latest</option>
-  </select>
-</div>
+    <p id="chatStatus" class="lead">Status: Ready</p>
+    <p id="chatMode" class="lead">Mode: Demo</p>
+    <p id="chatModel" class="lead">Model: gemma3:latest</p>
+    <p id="lastRequestModel" class="lead">Last request model: none</p>
 
-<p id="chatSource" class="lead">Response source: Demo replies</p>
-<p id="chatInstruction" class="lead">Instruction style: Direct and practical</p>
-<p id="chatContext" class="lead">Context limit: 10</p>
-<p id="chatConnection" class="lead">Connection: Not tested</p>
-<p class="lead">Local backend requires Live Server, not file opening.</p>
-<p id="chatCount" class="lead">Messages: 0</p>
+    <div class="lead">
+      <label for="modelSelect"><strong>Select model:</strong></label>
+      <select id="modelSelect">
+        <option value="gemma3:latest">gemma3:latest</option>
+        <option value="devstral:latest">devstral:latest</option>
+      </select>
+    </div>
 
-<div id="chatBox" class="chat-box">
-  <div class="message ai-message">Hello! I am your future local AI assistant.</div>
-  <div class="message user-message">I want to build and test my local AI workflow.</div>
-  <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
-</div>
+    <p id="chatSource" class="lead">Response source: Demo replies</p>
+    <p id="chatInstruction" class="lead">Instruction style: Direct and practical</p>
+    <p id="chatContext" class="lead">Context limit: 10</p>
+    <p id="chatConnection" class="lead">Connection: Not tested</p>
+    <p class="lead">Local backend requires Live Server, not file opening.</p>
+    <p id="chatCount" class="lead">Messages: 0</p>
 
-  <div class="chat-input-area">
-  <input id="chatInput" type="text" placeholder="Type your message here..." />
-  <button id="sendButton">Send</button>
-  <button id="stopButton" type="button">Stop</button>
-  <button id="newChatButton" type="button">New Chat</button>
-  <button id="clearButton" type="button">Clear</button>
-  <button id="resetButton" type="button">Reset</button>
-  <button id="exportButton" type="button">Export</button>
-  <button id="testConnectionButton" type="button">Test Connection</button>
-  <button id="toggleModeButton" type="button">Switch to Local</button>
-</div>
-</div>
-<script>
-const chatInput = document.getElementById("chatInput");
-const sendButton = document.getElementById("sendButton");
-const stopButton = document.getElementById("stopButton");
-const newChatButton = document.getElementById("newChatButton");
-const clearButton = document.getElementById("clearButton");
-const resetButton = document.getElementById("resetButton");
-const exportButton = document.getElementById("exportButton");
-const testConnectionButton = document.getElementById("testConnectionButton");
-const toggleModeButton = document.getElementById("toggleModeButton");
-const chatBox = document.getElementById("chatBox");
-const chatStatus = document.getElementById("chatStatus");
-const chatMode = document.getElementById("chatMode");
-const chatModel = document.getElementById("chatModel");
-const lastRequestModel = document.getElementById("lastRequestModel");
-const modelSelect = document.getElementById("modelSelect");
-const chatSource = document.getElementById("chatSource");
-const chatInstruction = document.getElementById("chatInstruction");
-const chatContext = document.getElementById("chatContext");
-const chatConnection = document.getElementById("chatConnection");
-const chatCount = document.getElementById("chatCount");
-let USE_LOCAL_BACKEND = false;
-const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-let LOCAL_MODEL_NAME = "gemma3:latest";
-const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Answer the user's question directly first, then add a short useful explanation only if needed. Do not use marketing language. Keep answers clear, practical, and focused on local AI.";
-const MAX_CONTEXT_MESSAGES = 10;
-const MODE_STORAGE_KEY = "localAiChatMode";
-const MODEL_STORAGE_KEY = "localAiSelectedModel";
-const LOCAL_REQUEST_TIMEOUT = 15000;
+    <div id="chatBox" class="chat-box">
+      <div class="message ai-message">Hello! I am your future local AI assistant.</div>
+      <div class="message user-message">I want to build and test my local AI workflow.</div>
+      <div class="message ai-message">Great. This page will later connect to your local Ollama models.</div>
+    </div>
 
- function refreshModeUI() {
-  chatMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
-  chatModel.textContent = `Model: ${LOCAL_MODEL_NAME}`;
-  chatSource.textContent = USE_LOCAL_BACKEND ? "Response source: Ollama local backend" : "Response source: Demo replies";
-chatInstruction.textContent = "Instruction style: Direct and practical";
-chatContext.textContent = `Context limit: ${MAX_CONTEXT_MESSAGES}`;
+    <div class="chat-input-area">
+      <input id="chatInput" type="text" placeholder="Type your message here..." />
+      <button id="sendButton">Send</button>
+      <button id="stopButton" type="button">Stop</button>
+      <button id="newChatButton" type="button">New Chat</button>
+      <button id="clearButton" type="button">Clear</button>
+      <button id="resetButton" type="button">Reset</button>
+      <button id="exportButton" type="button">Export</button>
+      <button id="testConnectionButton" type="button">Test Connection</button>
+      <button id="toggleModeButton" type="button">Switch to Local</button>
+    </div>
+  </div>
 
-  if (window.location.protocol === "file:") {
-    toggleModeButton.textContent = "Use Live Server";
-  } else {
-    toggleModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
-  }
+  <script src="shared-settings.js"></script>
 
-  localStorage.setItem(MODE_STORAGE_KEY, USE_LOCAL_BACKEND ? "local" : "demo");
-}
-const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
-if (savedMode === "local") {
-  USE_LOCAL_BACKEND = true;
-} else {
-  USE_LOCAL_BACKEND = false;
-}
-const savedModel = localStorage.getItem(MODEL_STORAGE_KEY);
-if (savedModel) {
-  LOCAL_MODEL_NAME = savedModel;
-  modelSelect.value = savedModel;
-}
-if (window.location.protocol === "file:") {
-  USE_LOCAL_BACKEND = false;
-  chatConnection.textContent = "Connection: Please open this page with Live Server";
-  localStorage.setItem(MODE_STORAGE_KEY, "demo");
-}
+  <script>
+    // === Elements ===
+    const chatInput = document.getElementById("chatInput");
+    const sendButton = document.getElementById("sendButton");
+    const stopButton = document.getElementById("stopButton");
+    const newChatButton = document.getElementById("newChatButton");
+    const clearButton = document.getElementById("clearButton");
+    const resetButton = document.getElementById("resetButton");
+    const exportButton = document.getElementById("exportButton");
+    const testConnectionButton = document.getElementById("testConnectionButton");
+    const toggleModeButton = document.getElementById("toggleModeButton");
+    const chatBox = document.getElementById("chatBox");
+    const chatStatus = document.getElementById("chatStatus");
+    const chatMode = document.getElementById("chatMode");
+    const chatModel = document.getElementById("chatModel");
+    const lastRequestModel = document.getElementById("lastRequestModel");
+    const modelSelect = document.getElementById("modelSelect");
+    const chatSource = document.getElementById("chatSource");
+    const chatInstruction = document.getElementById("chatInstruction");
+    const chatContext = document.getElementById("chatContext");
+    const chatConnection = document.getElementById("chatConnection");
+    const chatCount = document.getElementById("chatCount");
 
-refreshModeUI();
-let isWaitingForReply = false;
-let isLocalBackendReady = false;
-let currentRequestController = null;
-let wasRequestStoppedByUser = false;
+    // === State ===
+    let USE_LOCAL_BACKEND = false;
+    const SYSTEM_PROMPT = "You are the assistant of a project called Local AI Platform. This platform is being built step by step as a local AI workspace powered by Ollama. It includes local chat, coding support, file analysis, and project support. Do not invent a different product name. Answer the user's question directly first, then add a short useful explanation only if needed. Do not use marketing language. Keep answers clear, practical, and focused on local AI.";
+    const MAX_CONTEXT_MESSAGES = 10;
+    const LOCAL_REQUEST_TIMEOUT = 15000;
 
-  const defaultMessages = [
-    { text: "Hello! I am your future local AI assistant.", type: "ai-message" },
-    { text: "I want to build and test my local AI workflow.", type: "user-message" },
-    { text: "Great. This page will later connect to your local Ollama models.", type: "ai-message" }
-  ];
+    let isWaitingForReply = false;
+    let isLocalBackendReady = false;
+    let currentRequestController = null;
+    let wasRequestStoppedByUser = false;
 
-  let messages = [];
+    const defaultMessages = [
+      { text: "Hello! I am your future local AI assistant.", type: "ai-message" },
+      { text: "I want to build and test my local AI workflow.", type: "user-message" },
+      { text: "Great. This page will later connect to your local Ollama models.", type: "ai-message" }
+    ];
 
-  function saveChat() {
-    localStorage.setItem("localAiChatHistory", JSON.stringify(messages));
-  }
+    let messages = [];
 
-  function renderMessages() {
-  chatBox.innerHTML = "";
+    // === UI refresh ===
+    function refreshModeUI() {
+      chatMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
+      chatModel.textContent = "Model: " + SharedSettings.getModel();
+      chatSource.textContent = USE_LOCAL_BACKEND ? "Response source: Ollama local backend" : "Response source: Demo replies";
+      chatInstruction.textContent = "Instruction style: Direct and practical";
+      chatContext.textContent = "Context limit: " + MAX_CONTEXT_MESSAGES;
 
-  messages.forEach((item) => {
-  const message = document.createElement("div");
-  message.className = `message ${item.type}`;
-
- const messageText = document.createElement("span");
-messageText.textContent = item.text;
-message.appendChild(messageText);
-
-if (item.type === "ai-message") {
-  const copyButton = document.createElement("button");
-  copyButton.textContent = "Copy";
-  copyButton.className = "copy-button";
-  copyButton.type = "button";
-
-  copyButton.addEventListener("click", function () {
-    navigator.clipboard.writeText(item.text);
-    copyButton.textContent = "Copied";
-
-    setTimeout(function () {
-      copyButton.textContent = "Copy";
-    }, 1200);
-  });
-
-  message.appendChild(copyButton);
-}
-
-chatBox.appendChild(message);
-});
-
-  chatCount.textContent = `Messages: ${messages.length}`;
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-  function addMessage(text, type) {
-    messages.push({ text, type });
-    renderMessages();
-    saveChat();
-  }
- function updateInputState() {
-  const hasText = chatInput.value.trim() !== "";
-  const localModeBlocked = USE_LOCAL_BACKEND && !isLocalBackendReady;
-
-  sendButton.disabled = isWaitingForReply || !hasText || localModeBlocked;
- stopButton.disabled = !isWaitingForReply;
-newChatButton.disabled = isWaitingForReply;
-clearButton.disabled = isWaitingForReply;
-resetButton.disabled = isWaitingForReply;
-exportButton.disabled = isWaitingForReply || messages.length === 0;
-testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
-  modelSelect.disabled = isWaitingForReply;
-}
-async function testLocalConnection() {
-  if (!USE_LOCAL_BACKEND) {
-  isLocalBackendReady = false;
-  chatConnection.textContent = "Connection: Demo mode active";
-  updateInputState();
-  return;
-}
-
- isLocalBackendReady = false;
-chatConnection.textContent = "Connection: Testing...";
-updateInputState();
-
-  try {
-    const tagsUrl = LOCAL_BACKEND_URL.replace("/api/chat", "/api/tags");
-    const response = await fetch(tagsUrl);
-
-    if (!response.ok) {
-      throw new Error("Connection failed");
+      if (SharedSettings.isFileProtocol()) {
+        toggleModeButton.textContent = "Use Live Server";
+      } else {
+        toggleModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
+      }
     }
 
-    const data = await response.json();
-    const models = Array.isArray(data.models) ? data.models : [];
+    // === Initialize from SharedSettings ===
+    USE_LOCAL_BACKEND = SharedSettings.isLocal();
+    modelSelect.value = SharedSettings.getModel();
 
-    const modelExists = models.some((model) => {
-      return model.name === LOCAL_MODEL_NAME || model.name.startsWith(LOCAL_MODEL_NAME + ":");
-    });
+    if (SharedSettings.isFileProtocol()) {
+      USE_LOCAL_BACKEND = false;
+      SharedSettings.setMode("demo");
+      chatConnection.textContent = "Connection: Please open this page with Live Server";
+    }
 
-    if (modelExists) {
-  isLocalBackendReady = true;
-  chatConnection.textContent = `Connection: Available (${LOCAL_MODEL_NAME} found)`;
-  updateInputState();
-} else {
-  isLocalBackendReady = false;
-  chatConnection.textContent = `Connection: Available (but ${LOCAL_MODEL_NAME} not found)`;
-  updateInputState();
-  throw new Error("MODEL_NOT_FOUND");
-}
-  } catch (error) {
-    if (error.message === "MODEL_NOT_FOUND") {
-  return;
-}
+    refreshModeUI();
 
-isLocalBackendReady = false;
-chatConnection.textContent = "Connection: Unavailable - " + error.message;
-console.error("Ollama connection test failed:", error);
-updateInputState();
-  }
-}
- async function getAIResponse(text) {
-  if (USE_LOCAL_BACKEND) {
-      
-const demoTexts = defaultMessages.map((item) => item.text);
+    // === Save chat ===
+    function saveChat() {
+      localStorage.setItem("localAiChatHistory", JSON.stringify(messages));
+    }
 
-const conversationMessages = messages
-  .filter((item) => {
-    return item.text &&
-     !item.text.includes("thinking") &&                    
-      !demoTexts.includes(item.text);
-  })
-  .map((item) => ({
-    role: item.type === "user-message" ? "user" : "assistant",
-    content: item.text
-  }))
-  .slice(-MAX_CONTEXT_MESSAGES);
+    // === Render messages ===
+    function renderMessages() {
+      chatBox.innerHTML = "";
 
-const backendMessages = [
-  {
-    role: "system",
-    content: SYSTEM_PROMPT
-  },
-  ...conversationMessages
-];
+      messages.forEach((item) => {
+        const message = document.createElement("div");
+        message.className = "message " + item.type;
 
-  currentRequestController = new AbortController();
-const timeoutId = setTimeout(() => currentRequestController.abort(), LOCAL_REQUEST_TIMEOUT);
+        const messageText = document.createElement("span");
+        messageText.textContent = item.text;
+        message.appendChild(messageText);
 
-let response;
+        if (item.type === "ai-message") {
+          const copyButton = document.createElement("button");
+          copyButton.textContent = "Copy";
+          copyButton.className = "copy-button";
+          copyButton.type = "button";
 
-lastRequestModel.textContent = `Last request model: ${LOCAL_MODEL_NAME}`;
+          copyButton.addEventListener("click", function () {
+            navigator.clipboard.writeText(item.text);
+            copyButton.textContent = "Copied";
+            setTimeout(function () {
+              copyButton.textContent = "Copy";
+            }, 1200);
+          });
 
-try {
-  response = await fetch(LOCAL_BACKEND_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-   body: JSON.stringify({
-  model: LOCAL_MODEL_NAME,
-  messages: backendMessages,
-  stream: false
-}),
-    signal: currentRequestController.signal
-  });
-} finally {
-  clearTimeout(timeoutId);
-  currentRequestController = null;
-}
+          message.appendChild(copyButton);
+        }
 
-if (!response.ok) {
-  throw new Error("Local backend request failed");
-}
+        chatBox.appendChild(message);
+      });
 
-    const data = await response.json();
-    return data.message?.content || "No response received from the local backend.";
-  }
+      chatCount.textContent = "Messages: " + messages.length;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-  const lowerText = text.toLowerCase();
-
-  let aiResponse = "This is a temporary local reply. Later, this will come from Ollama.";
-
-  if (lowerText.includes("hello") || lowerText.includes("hi")) {
-    aiResponse = "Hello! The local AI chat is working and getting closer to a real assistant.";
-  } else if (lowerText.includes("ollama")) {
-    aiResponse = "Yes, the next big step will be connecting this chat interface to Ollama locally.";
-  } else if (lowerText.includes("project")) {
-    aiResponse = "This platform is growing step by step into a full local AI project workspace.";
-  } else if (lowerText.includes("code")) {
-    aiResponse = "Later, this local assistant will also help with coding and development tasks.";
-  } else if (lowerText.includes("file")) {
-    aiResponse = "File analysis is planned as one of the next important tools in this platform.";
-  }
-
-  return aiResponse;
-}
-
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-
-if (text === "") {
-  updateInputState();
-  return;
-}
-if (isWaitingForReply) return;
-
-    isWaitingForReply = true;
-wasRequestStoppedByUser = false;
-chatStatus.textContent = "Status: Thinking...";
-
-addMessage(text, "user-message");
-    chatInput.value = "";
-
-   chatInput.disabled = true;
-updateInputState();
-
-   const thinkingLabel = USE_LOCAL_BACKEND ? "Ollama is thinking" : "Demo is thinking";
-
-messages.push({ text: thinkingLabel, type: "ai-message" });
-renderMessages();
-
-let dots = 0;
-const loadingInterval = setInterval(() => {
-  dots = (dots + 1) % 4;
-  messages[messages.length - 1].text = thinkingLabel + ".".repeat(dots);
-  renderMessages();
-}, 400);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      clearInterval(loadingInterval);
-
-      messages[messages.length - 1].text = await getAIResponse(text);
+    function addMessage(text, type) {
+      messages.push({ text: text, type: type });
       renderMessages();
       saveChat();
-    } catch (error) {
-  clearInterval(loadingInterval);
-
- if (error.name === "AbortError" && wasRequestStoppedByUser) {
-  messages[messages.length - 1].text = "Response stopped by user.";
-} else if (error.name === "AbortError") {
-  messages[messages.length - 1].text = "The local backend request timed out. Please check Ollama and try again.";
-} else {
-  messages[messages.length - 1].text = "Something went wrong. Please try again.";
-}
-
-  renderMessages();
-  saveChat();
-} finally {
-     isWaitingForReply = false;
-chatStatus.textContent = "Status: Ready";
-chatInput.disabled = false;
-updateInputState();
-chatInput.focus();
-chatBox.scrollTop = chatBox.scrollHeight;
     }
-  }
 
-     newChatButton.addEventListener("click", function () {
-  if (isWaitingForReply) return;
+    // === Update input state ===
+    function updateInputState() {
+      const hasText = chatInput.value.trim() !== "";
+      const localModeBlocked = USE_LOCAL_BACKEND && !isLocalBackendReady;
 
-  messages = [
-    {
-      text: USE_LOCAL_BACKEND
-        ? "New local Ollama chat started."
-        : "New demo chat started.",
-      type: "ai-message"
+      sendButton.disabled = isWaitingForReply || !hasText || localModeBlocked;
+      stopButton.disabled = !isWaitingForReply;
+      newChatButton.disabled = isWaitingForReply;
+      clearButton.disabled = isWaitingForReply;
+      resetButton.disabled = isWaitingForReply;
+      exportButton.disabled = isWaitingForReply || messages.length === 0;
+      testConnectionButton.disabled = isWaitingForReply || !USE_LOCAL_BACKEND;
+      modelSelect.disabled = isWaitingForReply;
     }
-  ];
 
-  renderMessages();
-  saveChat();
-  updateInputState();
-  chatInput.focus();
-});
-exportButton.addEventListener("click", function () {
-  if (isWaitingForReply || messages.length === 0) return;
+    // === Test connection ===
+    async function testLocalConnection() {
+      if (!USE_LOCAL_BACKEND) {
+        isLocalBackendReady = false;
+        chatConnection.textContent = "Connection: Demo mode active";
+        updateInputState();
+        return;
+      }
 
-  const lines = messages.map((item) => {
-    const role = item.type === "user-message" ? "User" : "Assistant";
-    return `${role}: ${item.text}`;
-  });
+      isLocalBackendReady = false;
+      chatConnection.textContent = "Connection: Testing...";
+      updateInputState();
 
-  const content = lines.join("\n\n");
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
+      const result = await SharedSettings.testConnection();
 
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "local-ai-chat-export.txt";
-  link.click();
+      if (!result.ok) {
+        isLocalBackendReady = false;
+        chatConnection.textContent = "Connection: Unavailable - Is Ollama running?";
+        updateInputState();
+        return;
+      }
 
-  URL.revokeObjectURL(url);
-});
-resetButton.addEventListener("click", function () {
-  if (isWaitingForReply) return;
+      if (result.modelFound) {
+        isLocalBackendReady = true;
+        chatConnection.textContent = "Connection: Available (" + result.selectedModel + " found)";
+        updateInputState();
+      } else {
+        isLocalBackendReady = false;
+        chatConnection.textContent = "Connection: Available (but " + result.selectedModel + " not found)";
+        updateInputState();
+      }
+    }
 
-  localStorage.removeItem("localAiChatHistory");
-  messages = [...defaultMessages];
-  renderMessages();
-  saveChat();
-  updateInputState();
-  chatInput.focus();
-});
-  const savedChat = localStorage.getItem("localAiChatHistory");
+    // === Get AI response ===
+    async function getAIResponse(text) {
+      if (USE_LOCAL_BACKEND) {
+        const demoTexts = defaultMessages.map((item) => item.text);
 
-  if (savedChat) {
-    try {
-      messages = JSON.parse(savedChat);
-      if (!Array.isArray(messages) || messages.length === 0) {
+        const conversationMessages = messages
+          .filter((item) => {
+            return item.text &&
+              !item.text.includes("thinking") &&
+              !demoTexts.includes(item.text);
+          })
+          .map((item) => ({
+            role: item.type === "user-message" ? "user" : "assistant",
+            content: item.text
+          }))
+          .slice(-MAX_CONTEXT_MESSAGES);
+
+        const backendMessages = [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...conversationMessages
+        ];
+
+        currentRequestController = new AbortController();
+        const timeoutId = setTimeout(() => currentRequestController.abort(), LOCAL_REQUEST_TIMEOUT);
+
+        let response;
+        const currentModel = SharedSettings.getModel();
+        lastRequestModel.textContent = "Last request model: " + currentModel;
+
+        try {
+          response = await fetch(SharedSettings.LOCAL_BACKEND_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: currentModel,
+              messages: backendMessages,
+              stream: false
+            }),
+            signal: currentRequestController.signal
+          });
+        } finally {
+          clearTimeout(timeoutId);
+          currentRequestController = null;
+        }
+
+        if (!response.ok) {
+          throw new Error("Local backend request failed");
+        }
+
+        const data = await response.json();
+        return (data.message && data.message.content) || "No response received from the local backend.";
+      }
+
+      // Demo mode
+      const lowerText = text.toLowerCase();
+      let aiResponse = "This is a temporary local reply. Later, this will come from Ollama.";
+
+      if (lowerText.includes("hello") || lowerText.includes("hi")) {
+        aiResponse = "Hello! The local AI chat is working and getting closer to a real assistant.";
+      } else if (lowerText.includes("ollama")) {
+        aiResponse = "Yes, the next big step will be connecting this chat interface to Ollama locally.";
+      } else if (lowerText.includes("project")) {
+        aiResponse = "This platform is growing step by step into a full local AI project workspace.";
+      } else if (lowerText.includes("code")) {
+        aiResponse = "Later, this local assistant will also help with coding and development tasks.";
+      } else if (lowerText.includes("file")) {
+        aiResponse = "File analysis is planned as one of the next important tools in this platform.";
+      }
+
+      return aiResponse;
+    }
+
+    // === Send message ===
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+
+      if (text === "") {
+        updateInputState();
+        return;
+      }
+      if (isWaitingForReply) return;
+
+      isWaitingForReply = true;
+      wasRequestStoppedByUser = false;
+      chatStatus.textContent = "Status: Thinking...";
+
+      addMessage(text, "user-message");
+      chatInput.value = "";
+      chatInput.disabled = true;
+      updateInputState();
+
+      const thinkingLabel = USE_LOCAL_BACKEND ? "Ollama is thinking" : "Demo is thinking";
+      messages.push({ text: thinkingLabel, type: "ai-message" });
+      renderMessages();
+
+      let dots = 0;
+      const loadingInterval = setInterval(() => {
+        dots = (dots + 1) % 4;
+        messages[messages.length - 1].text = thinkingLabel + ".".repeat(dots);
+        renderMessages();
+      }, 400);
+
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        clearInterval(loadingInterval);
+
+        messages[messages.length - 1].text = await getAIResponse(text);
+        renderMessages();
+        saveChat();
+      } catch (error) {
+        clearInterval(loadingInterval);
+
+        if (error.name === "AbortError" && wasRequestStoppedByUser) {
+          messages[messages.length - 1].text = "Response stopped by user.";
+        } else if (error.name === "AbortError") {
+          messages[messages.length - 1].text = "The local backend request timed out. Please check Ollama and try again.";
+        } else {
+          messages[messages.length - 1].text = "Something went wrong. Please try again.";
+        }
+
+        renderMessages();
+        saveChat();
+      } finally {
+        isWaitingForReply = false;
+        chatStatus.textContent = "Status: Ready";
+        chatInput.disabled = false;
+        updateInputState();
+        chatInput.focus();
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+
+    // === Buttons ===
+    newChatButton.addEventListener("click", function () {
+      if (isWaitingForReply) return;
+
+      messages = [
+        {
+          text: USE_LOCAL_BACKEND ? "New local Ollama chat started." : "New demo chat started.",
+          type: "ai-message"
+        }
+      ];
+
+      renderMessages();
+      saveChat();
+      updateInputState();
+      chatInput.focus();
+    });
+
+    clearButton.addEventListener("click", function () {
+      if (isWaitingForReply) return;
+
+      messages = [];
+      renderMessages();
+      saveChat();
+      updateInputState();
+      chatInput.focus();
+    });
+
+    exportButton.addEventListener("click", function () {
+      if (isWaitingForReply || messages.length === 0) return;
+
+      const lines = messages.map((item) => {
+        const role = item.type === "user-message" ? "User" : "Assistant";
+        return role + ": " + item.text;
+      });
+
+      const content = lines.join("\n\n");
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "local-ai-chat-export.txt";
+      link.click();
+
+      URL.revokeObjectURL(url);
+    });
+
+    resetButton.addEventListener("click", function () {
+      if (isWaitingForReply) return;
+
+      localStorage.removeItem("localAiChatHistory");
+      messages = [...defaultMessages];
+      renderMessages();
+      saveChat();
+      updateInputState();
+      chatInput.focus();
+    });
+
+    // === Load saved chat ===
+    const savedChat = localStorage.getItem("localAiChatHistory");
+    if (savedChat) {
+      try {
+        messages = JSON.parse(savedChat);
+        if (!Array.isArray(messages) || messages.length === 0) {
+          messages = [...defaultMessages];
+        }
+      } catch (error) {
         messages = [...defaultMessages];
       }
-    } catch (error) {
+    } else {
       messages = [...defaultMessages];
     }
-  } else {
-    messages = [...defaultMessages];
-  }
 
-  renderMessages();
-  updateInputState();
-modelSelect.addEventListener("change", function () {
-  if (isWaitingForReply) return;
-
-  LOCAL_MODEL_NAME = modelSelect.value;
-  localStorage.setItem(MODEL_STORAGE_KEY, LOCAL_MODEL_NAME);
-
-  isLocalBackendReady = false;
-  chatConnection.textContent = "Connection: Not tested";
-  refreshModeUI();
-  updateInputState();
-});
-
-sendButton.addEventListener("click", sendMessage);
-
-stopButton.addEventListener("click", function () {
-  wasRequestStoppedByUser = true;
-
-  if (currentRequestController) {
-    currentRequestController.abort();
-  }
-});
-
-testConnectionButton.addEventListener("click", testLocalConnection);
-toggleModeButton.addEventListener("click", async function () {
-  if (isWaitingForReply) return;
-
-  if (window.location.protocol === "file:") {
-    USE_LOCAL_BACKEND = false;
-    chatConnection.textContent = "Connection: Please open this page with Live Server";
-    refreshModeUI();
+    renderMessages();
     updateInputState();
-    return;
-  }
 
-  USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
-  chatConnection.textContent = "Connection: Not tested";
-  refreshModeUI();
-  updateInputState();
+    // === Model select ===
+    modelSelect.addEventListener("change", function () {
+      if (isWaitingForReply) return;
 
-  if (USE_LOCAL_BACKEND) {
-    await testLocalConnection();
-  }
-});
+      SharedSettings.setModel(modelSelect.value);
+      isLocalBackendReady = false;
+      chatConnection.textContent = "Connection: Not tested";
+      refreshModeUI();
+      updateInputState();
+    });
 
-chatInput.addEventListener("input", updateInputState);
+    // === Send / Stop ===
+    sendButton.addEventListener("click", sendMessage);
 
-chatInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    if (!sendButton.disabled) {
-      sendMessage();
-    }
-  }
-});
-</script>
+    stopButton.addEventListener("click", function () {
+      wasRequestStoppedByUser = true;
+      if (currentRequestController) {
+        currentRequestController.abort();
+      }
+    });
+
+    // === Test connection ===
+    testConnectionButton.addEventListener("click", testLocalConnection);
+
+    // === Toggle mode ===
+    toggleModeButton.addEventListener("click", async function () {
+      if (isWaitingForReply) return;
+
+      if (SharedSettings.isFileProtocol()) {
+        USE_LOCAL_BACKEND = false;
+        SharedSettings.setMode("demo");
+        chatConnection.textContent = "Connection: Please open this page with Live Server";
+        refreshModeUI();
+        updateInputState();
+        return;
+      }
+
+      USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
+      SharedSettings.setMode(USE_LOCAL_BACKEND ? "local" : "demo");
+      chatConnection.textContent = "Connection: Not tested";
+      isLocalBackendReady = false;
+      refreshModeUI();
+      updateInputState();
+
+      if (USE_LOCAL_BACKEND) {
+        await testLocalConnection();
+      }
+    });
+
+    // === Input handlers ===
+    chatInput.addEventListener("input", updateInputState);
+
+    chatInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        if (!sendButton.disabled) {
+          sendMessage();
+        }
+      }
+    });
+  </script>
 </body>
-
 </html>
