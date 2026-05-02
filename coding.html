@@ -6,13 +6,79 @@
   <title>Coding Assistant - Local AI Platform</title>
 
   <style>
-    body {
+   body {
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #f4f7ff 0%, #eef3ff 100%);
       color: #333;
       margin: 0;
-      padding: 40px 20px;
+      padding: 0 20px 40px;
       text-align: center;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(59, 115, 217, 0.95);
+      color: white;
+      padding: 18px 28px;
+      border-radius: 20px;
+      margin: 20px auto 0;
+      max-width: 900px;
+      width: 92%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 30px rgba(59, 115, 217, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-top: 0;
+      background: transparent;
+      transition: background-color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: none;
+    }
+
+    .nav-links a.active {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 18px;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+      }
     }
 
     .container {
@@ -104,7 +170,22 @@
       cursor: pointer;
       margin-bottom: 1rem;
     }
+#copyAnalysisButton {
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      background: rgba(59, 115, 217, 0.12);
+      color: #234;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0 8px;
+      transition: background 0.25s ease;
+    }
 
+    #copyAnalysisButton:hover {
+      background: rgba(59, 115, 217, 0.2);
+    }
     .analysis-result {
       max-width: 760px;
       margin: 1.5rem auto 2rem;
@@ -139,6 +220,15 @@
 </head>
 
 <body>
+  <nav class="navbar">
+    <div class="nav-logo">MyLogo</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html" class="active">Tools</a>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="eyebrow">CODING ASSISTANT</div>
     <h1>Local Coding Assistant</h1>
