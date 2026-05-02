@@ -412,6 +412,18 @@
     SharedSettings.setModel(modelSelect.value);
   });
 
+  // === Restore last analysis result ===
+  const savedResult = localStorage.getItem("fileAnalysisLastResult");
+  const savedFileName = localStorage.getItem("fileAnalysisLastFileName");
+  if (savedResult) {
+    analysisBox.textContent = savedResult;
+    analysisHeader.classList.add("visible");
+    analysisBox.classList.add("visible");
+    if (savedFileName) {
+      analysisHeader.textContent = `🧠 AI Analysis of "${savedFileName}":`;
+    }
+  }
+
   // === File handling ===
   const supportedExtensions = [
     "txt", "html", "htm", "css", "js", "json",
@@ -434,17 +446,20 @@
     fileType.textContent = file.type || "Unknown";
     fileInfo.classList.add("visible");
 
-    fileWarning.classList.remove("visible");
+   fileWarning.classList.remove("visible");
     previewHeader.classList.remove("visible");
     filePreview.classList.remove("visible");
     analyzeControls.style.display = "none";
     analysisHeader.classList.remove("visible");
     analysisBox.classList.remove("visible");
+    analysisHeader.textContent = "🧠 AI Analysis:";
     filePreview.textContent = "";
     analysisBox.textContent = "";
     currentFileContent = "";
     currentFileName = "";
-
+    localStorage.removeItem("fileAnalysisLastResult");
+    localStorage.removeItem("fileAnalysisLastFileName");
+    
     if (!isTextFile(file)) {
       fileWarning.textContent = "⚠️ This file type is not supported for preview. Only text files can be analyzed for now.";
       fileWarning.classList.add("visible");
@@ -517,12 +532,15 @@
     analyzeBtn.disabled = true;
     stopBtn.disabled = false;
 
-   if (!SharedSettings.isLocal()) {
-      analysisBox.textContent =
+ if (!SharedSettings.isLocal()) {
+      const demoText =
         `📋 Demo Analysis of "${currentFileName}":\n\n` +
         `• File length: ${currentFileContent.length} characters\n` +
         `• Number of lines: ${currentFileContent.split("\n").length}\n\n` +
         `(Switch to Local Backend and ensure Ollama is running for a real AI analysis.)`;
+      analysisBox.textContent = demoText;
+      localStorage.setItem("fileAnalysisLastResult", demoText);
+      localStorage.setItem("fileAnalysisLastFileName", currentFileName);
       analyzeBtn.disabled = false;
       stopBtn.disabled = true;
       return;
@@ -549,10 +567,12 @@
         signal: abortController.signal
       });
 
-      if (!res.ok) throw new Error("HTTP " + res.status);
+     if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
       const reply = data.message && data.message.content ? data.message.content : "(empty response)";
       analysisBox.textContent = reply;
+      localStorage.setItem("fileAnalysisLastResult", reply);
+      localStorage.setItem("fileAnalysisLastFileName", currentFileName);
     } catch (err) {
       if (err.name === "AbortError") {
         analysisBox.textContent = "⏸ Analysis stopped by user.";
