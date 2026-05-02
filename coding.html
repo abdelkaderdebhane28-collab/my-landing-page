@@ -55,80 +55,70 @@
       font-size: 1.1rem;
       margin-bottom: 1rem;
     }
-.code-panel {
-  margin: 2rem auto;
-  max-width: 760px;
-  text-align: left;
-}
+    .code-panel {
+      margin: 2rem auto;
+      max-width: 760px;
+      text-align: left;
+    }
 
-.code-panel label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: #333;
-}
+    .code-panel label {
+      display: block;
+      margin-bottom: 0.75rem;
+      color: #333;
+    }
 
-.code-panel textarea {
-  width: 100%;
-  min-height: 220px;
-  padding: 14px 16px;
-  border: 1px solid #cfd8ea;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  font-family: Consolas, monospace;
-  resize: vertical;
-  outline: none;
-}
+    .code-panel textarea {
+      width: 100%;
+      min-height: 220px;
+      padding: 14px 16px;
+      border: 1px solid #cfd8ea;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-family: Consolas, monospace;
+      resize: vertical;
+      outline: none;
+    }
 
-.code-panel textarea:focus {
-  border-color: #3b73d9;
-  box-shadow: 0 0 0 3px rgba(59, 115, 217, 0.12);
-}
+    .code-panel textarea:focus {
+      border-color: #3b73d9;
+      box-shadow: 0 0 0 3px rgba(59, 115, 217, 0.12);
+    }
 
-.code-panel button {
-  margin-top: 14px;
-  border: none;
-  padding: 14px 22px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #3b73d9, #295bb3);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
-#toggleCodingModeButton {
-  border: none;
-  padding: 12px 20px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #3b73d9, #295bb3);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-.code-panel button {
-  margin-top: 14px;
-  border: none;
-  padding: 14px 22px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #3b73d9, #295bb3);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
+    .code-panel button {
+      margin-top: 14px;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b73d9, #295bb3);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #toggleCodingModeButton {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #3b73d9, #295bb3);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
 
-.analysis-result {
-  max-width: 760px;
-  margin: 1.5rem auto 2rem;
-  padding: 1.25rem;
-  background: #f8faff;
-  border: 1px solid #e3ebff;
-  border-radius: 18px;
-  text-align: left;
-  color: #555;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  max-height: 300px;
-overflow-y: auto;
-}
+    .analysis-result {
+      max-width: 760px;
+      margin: 1.5rem auto 2rem;
+      padding: 1.25rem;
+      background: #f8faff;
+      border: 1px solid #e3ebff;
+      border-radius: 18px;
+      text-align: left;
+      color: #555;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
     a {
       display: inline-block;
       margin-top: 18px;
@@ -153,228 +143,244 @@ overflow-y: auto;
     <div class="eyebrow">CODING ASSISTANT</div>
     <h1>Local Coding Assistant</h1>
 
-   <p class="lead">
-  A future local AI tool for helping with code, debugging, explanations, and project development.
-</p>
+    <p class="lead">
+      A future local AI tool for helping with code, debugging, explanations, and project development.
+    </p>
 
-<p id="codingMode" class="lead">Mode: Demo</p>
-<p id="codingModel" class="lead">Model: gemma3:latest</p>
-<p id="codingConnection" class="lead">Connection: Not tested</p>
-<button id="toggleCodingModeButton" type="button">Switch to Local</button>
+    <p id="codingMode" class="lead">Mode: Demo</p>
+    <p id="codingModel" class="lead">Model: gemma3:latest</p>
+    <p id="codingConnection" class="lead">Connection: Not tested</p>
+    <button id="toggleCodingModeButton" type="button">Switch to Local</button>
 
-   <p>
-  This page will become the coding assistant module of the Local AI Platform.
-  It will later connect to Ollama and help analyze code, explain errors, and suggest improvements.
-</p>
+    <p>
+      This page will become the coding assistant module of the Local AI Platform.
+      It will later connect to Ollama and help analyze code, explain errors, and suggest improvements.
+    </p>
 
-<div class="code-panel">
-  <label for="codeInput"><strong>Paste your code here:</strong></label>
- <textarea id="codeInput" placeholder="Paste HTML, CSS, JavaScript, or any code snippet here..."></textarea>
+    <div class="code-panel">
+      <label for="codeInput"><strong>Paste your code here:</strong></label>
+      <textarea id="codeInput" placeholder="Paste HTML, CSS, JavaScript, or any code snippet here..."></textarea>
 
-<p id="codeStats" class="lead">Characters: 0 | Lines: 0</p>
+      <p id="codeStats" class="lead">Characters: 0 | Lines: 0</p>
 
- <button id="analyzeButton" type="button">Analyze Code</button>
-<button id="clearCodeButton" type="button">Clear</button>
-</div>
+      <button id="analyzeButton" type="button">Analyze Code</button>
+      <button id="clearCodeButton" type="button">Clear</button>
+    </div>
 
-<div id="analysisResult" class="analysis-result">
-  Analysis result will appear here.
-</div>
+    <div id="analysisResult" class="analysis-result">
+      Analysis result will appear here.
+    </div>
 
-<button id="copyAnalysisButton" type="button">Copy Analysis</button>
+    <button id="copyAnalysisButton" type="button">Copy Analysis</button>
 
-<a href="tools.html">← Back to Tools</a>
+    <a href="tools.html">← Back to Tools</a>
   </div>
+
+  <script src="shared-settings.js"></script>
+
   <script>
-const codeInput = document.getElementById("codeInput");
-const codeStats = document.getElementById("codeStats");
-const analyzeButton = document.getElementById("analyzeButton");
-const analysisResult = document.getElementById("analysisResult");
-const copyAnalysisButton = document.getElementById("copyAnalysisButton");
-const codingMode = document.getElementById("codingMode");
-const codingModel = document.getElementById("codingModel");
-const codingConnection = document.getElementById("codingConnection");
-const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
-const clearCodeButton = document.getElementById("clearCodeButton");
-let USE_LOCAL_BACKEND = false;
-let isCodingBackendReady = false;
+    // === Elements ===
+    const codeInput = document.getElementById("codeInput");
+    const codeStats = document.getElementById("codeStats");
+    const analyzeButton = document.getElementById("analyzeButton");
+    const analysisResult = document.getElementById("analysisResult");
+    const copyAnalysisButton = document.getElementById("copyAnalysisButton");
+    const codingMode = document.getElementById("codingMode");
+    const codingModel = document.getElementById("codingModel");
+    const codingConnection = document.getElementById("codingConnection");
+    const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
+    const clearCodeButton = document.getElementById("clearCodeButton");
 
-const LOCAL_BACKEND_URL = "http://localhost:11434/api/chat";
-const LOCAL_MODEL_NAME = "gemma3:latest";
-const CODING_SYSTEM_PROMPT = "You are the coding assistant of the Local AI Platform. Analyze code clearly, explain problems, suggest practical fixes, and keep answers direct.";
+    // === State ===
+    let USE_LOCAL_BACKEND = false;
+    let isCodingBackendReady = false;
 
-function refreshCodingModeUI() {
-  codingMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
-codingModel.textContent = `Model: ${LOCAL_MODEL_NAME}`;
-toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
-}
+    const CODING_SYSTEM_PROMPT = "You are the coding assistant of the Local AI Platform. Analyze code clearly, explain problems, suggest practical fixes, and keep answers direct.";
 
-refreshCodingModeUI();
-async function testCodingConnection() {
- if (!USE_LOCAL_BACKEND) {
-  isCodingBackendReady = false;
-  codingConnection.textContent = "Connection: Demo mode active";
-  return;
-}
-
-  isCodingBackendReady = false;
-codingConnection.textContent = "Connection: Testing...";
-
-  try {
-    const tagsUrl = LOCAL_BACKEND_URL.replace("/api/chat", "/api/tags");
-    const response = await fetch(tagsUrl);
-
-    if (!response.ok) {
-      throw new Error("Connection failed");
+    // === UI refresh ===
+    function refreshCodingModeUI() {
+      codingMode.textContent = USE_LOCAL_BACKEND ? "Mode: Local Backend" : "Mode: Demo";
+      codingModel.textContent = "Model: " + SharedSettings.getModel();
+      toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
     }
 
-    const data = await response.json();
-    const models = Array.isArray(data.models) ? data.models : [];
+    // === Initialize from SharedSettings ===
+    USE_LOCAL_BACKEND = SharedSettings.isLocal();
+    if (SharedSettings.isFileProtocol()) {
+      USE_LOCAL_BACKEND = false;
+      codingConnection.textContent = "Connection: Please open with Live Server";
+      toggleCodingModeButton.textContent = "Use Live Server";
+    }
+    refreshCodingModeUI();
 
-    const modelExists = models.some((model) => {
-      return model.name === LOCAL_MODEL_NAME || model.name.startsWith(LOCAL_MODEL_NAME + ":");
-    });
+    // === Test connection ===
+    async function testCodingConnection() {
+      if (!USE_LOCAL_BACKEND) {
+        isCodingBackendReady = false;
+        codingConnection.textContent = "Connection: Demo mode active";
+        return;
+      }
 
-   if (modelExists) {
-  isCodingBackendReady = true;
-  codingConnection.textContent = `Connection: Available (${LOCAL_MODEL_NAME} found)`;
-} else {
-  isCodingBackendReady = false;
-  codingConnection.textContent = `Connection: Available (but ${LOCAL_MODEL_NAME} not found)`;
-}
- } catch (error) {
-  isCodingBackendReady = false;
-  codingConnection.textContent = "Connection: Unavailable";
-}
-}
-async function getCodingAnalysis(code) {
-  if (USE_LOCAL_BACKEND) {
-    const response = await fetch(LOCAL_BACKEND_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: LOCAL_MODEL_NAME,
-        messages: [
-          {
-            role: "system",
-            content: CODING_SYSTEM_PROMPT
+      isCodingBackendReady = false;
+      codingConnection.textContent = "Connection: Testing...";
+
+      const result = await SharedSettings.testConnection();
+
+      if (!result.ok) {
+        isCodingBackendReady = false;
+        codingConnection.textContent = "Connection: Unavailable - Is Ollama running?";
+        return;
+      }
+
+      if (result.modelFound) {
+        isCodingBackendReady = true;
+        codingConnection.textContent = "Connection: Available (" + result.selectedModel + " found)";
+      } else {
+        isCodingBackendReady = false;
+        codingConnection.textContent = "Connection: Available (but " + result.selectedModel + " not found)";
+      }
+    }
+
+    // === Get analysis ===
+    async function getCodingAnalysis(code) {
+      if (USE_LOCAL_BACKEND) {
+        const response = await fetch(SharedSettings.LOCAL_BACKEND_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
           },
-          {
-            role: "user",
-            content: "Analyze this code and give clear practical feedback:\n\n" + code
-          }
-        ],
-        stream: false
-      })
-    });
+          body: JSON.stringify({
+            model: SharedSettings.getModel(),
+            messages: [
+              {
+                role: "system",
+                content: CODING_SYSTEM_PROMPT
+              },
+              {
+                role: "user",
+                content: "Analyze this code and give clear practical feedback:\n\n" + code
+              }
+            ],
+            stream: false
+          })
+        });
 
-    if (!response.ok) {
-      throw new Error("Coding analysis request failed");
+        if (!response.ok) {
+          throw new Error("Coding analysis request failed");
+        }
+
+        const data = await response.json();
+        return (data.message && data.message.content) || "No analysis received from Ollama.";
+      }
+
+      return (
+        "Demo analysis:\n\n" +
+        "- Code received successfully.\n" +
+        "- Characters: " + code.length + "\n" +
+        "- Lines: " + code.split("\n").length + "\n\n" +
+        "Later, this analysis will be generated by Ollama."
+      );
     }
 
-    const data = await response.json();
-    return data.message?.content || "No analysis received from Ollama.";
-  }
+    // === Copy analysis ===
+    copyAnalysisButton.addEventListener("click", function () {
+      const text = analysisResult.textContent.trim();
 
-  return (
-    "Demo analysis:\n\n" +
-    "- Code received successfully.\n" +
-    "- Characters: " + code.length + "\n" +
-    "- Lines: " + code.split("\n").length + "\n\n" +
-    "Later, this analysis will be generated by Ollama."
-  );
-}
-copyAnalysisButton.addEventListener("click", function () {
-  const text = analysisResult.textContent.trim();
+      if (
+        text === "" ||
+        text === "Analysis result will appear here." ||
+        text.includes("analyzing") ||
+        text.includes("Error")
+      ) {
+        return;
+      }
 
-  if (
-    text === "" ||
-    text === "Analysis result will appear here." ||
-    text.includes("analyzing") ||
-    text.includes("Error")
-  ) {
-    return;
-  }
+      navigator.clipboard.writeText(text);
+      copyAnalysisButton.textContent = "Copied";
 
-  if (text === "" || text === "Analysis result will appear here.") {
-    return;
-  }
+      setTimeout(function () {
+        copyAnalysisButton.textContent = "Copy Analysis";
+      }, 1200);
+    });
 
-  navigator.clipboard.writeText(text);
-  copyAnalysisButton.textContent = "Copied";
+    // === Toggle mode ===
+    toggleCodingModeButton.addEventListener("click", async function () {
+      if (SharedSettings.isFileProtocol()) {
+        USE_LOCAL_BACKEND = false;
+        SharedSettings.setMode("demo");
+        codingConnection.textContent = "Connection: Please open with Live Server";
+        toggleCodingModeButton.textContent = "Use Live Server";
+        refreshCodingModeUI();
+        return;
+      }
 
-  setTimeout(function () {
-    copyAnalysisButton.textContent = "Copy Analysis";
-  }, 1200);
-}); 
+      USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
+      SharedSettings.setMode(USE_LOCAL_BACKEND ? "local" : "demo");
+      refreshCodingModeUI();
 
-toggleCodingModeButton.addEventListener("click", async function () {
-  USE_LOCAL_BACKEND = !USE_LOCAL_BACKEND;
-  refreshCodingModeUI();
+      if (USE_LOCAL_BACKEND) {
+        await testCodingConnection();
+      } else {
+        codingConnection.textContent = "Connection: Demo mode active";
+      }
+    });
 
-  if (USE_LOCAL_BACKEND) {
-    await testCodingConnection();
-  } else {
-    codingConnection.textContent = "Connection: Demo mode active";
-  }
-});
- analyzeButton.addEventListener("click", async function () {
-  const code = codeInput.value.trim();
+    // === Analyze button ===
+    analyzeButton.addEventListener("click", async function () {
+      const code = codeInput.value.trim();
 
- if (code === "") {
-  analysisResult.textContent = "⚠️ Please paste some code before analyzing.";
-  return;
-}
+      if (code === "") {
+        analysisResult.textContent = "⚠️ Please paste some code before analyzing.";
+        return;
+      }
 
-if (USE_LOCAL_BACKEND && !isCodingBackendReady) {
-  analysisResult.textContent = "Local backend is not ready. Please switch to Local and wait for a successful connection.";
-  return;
-}
-  analyzeButton.disabled = true;
- analysisResult.style.color = "#3b73d9";
+      if (USE_LOCAL_BACKEND && !isCodingBackendReady) {
+        analysisResult.textContent = "Local backend is not ready. Please switch to Local and wait for a successful connection.";
+        return;
+      }
 
-analysisResult.textContent = USE_LOCAL_BACKEND
-  ? "Ollama is analyzing your code..."
-  : "Demo is analyzing your code...";
+      analyzeButton.disabled = true;
+      analysisResult.style.color = "#3b73d9";
 
-  try {
-    const result = await getCodingAnalysis(code);
-    analysisResult.style.color = "#333";
-   analysisResult.textContent = result;
-analysisResult.scrollTop = analysisResult.scrollHeight;
-  }catch (error) {
-  analysisResult.style.color = "#c0392b";
-  analysisResult.textContent = "❌ Error: Unable to analyze code. Please check your Ollama connection.";
-} finally {
-    analyzeButton.disabled = false;
-  }
-});
-// Ctrl + Enter
-codeInput.addEventListener("keydown", function (event) {
-  if (event.ctrlKey && event.key === "Enter") {
-    event.preventDefault();
-    analyzeButton.click();
-  }
-});
+      analysisResult.textContent = USE_LOCAL_BACKEND
+        ? "Ollama is analyzing your code..."
+        : "Demo is analyzing your code...";
 
-// Live stats
-codeInput.addEventListener("input", function () {
-  const code = codeInput.value;
+      try {
+        const result = await getCodingAnalysis(code);
+        analysisResult.style.color = "#333";
+        analysisResult.textContent = result;
+        analysisResult.scrollTop = analysisResult.scrollHeight;
+      } catch (error) {
+        analysisResult.style.color = "#c0392b";
+        analysisResult.textContent = "❌ Error: Unable to analyze code. Please check your Ollama connection.";
+      } finally {
+        analyzeButton.disabled = false;
+      }
+    });
 
-  const charCount = code.length;
-  const lineCount = code === "" ? 0 : code.split("\n").length;
+    // === Ctrl + Enter shortcut ===
+    codeInput.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault();
+        analyzeButton.click();
+      }
+    });
 
-  codeStats.textContent = `Characters: ${charCount} | Lines: ${lineCount}`;
-});
+    // === Live stats ===
+    codeInput.addEventListener("input", function () {
+      const code = codeInput.value;
+      const charCount = code.length;
+      const lineCount = code === "" ? 0 : code.split("\n").length;
+      codeStats.textContent = "Characters: " + charCount + " | Lines: " + lineCount;
+    });
 
-// Clear button
-clearCodeButton.addEventListener("click", function () {
-  codeInput.value = "";
-  analysisResult.textContent = "Analysis result will appear here.";
-  codeStats.textContent = "Characters: 0 | Lines: 0";
-});
-</script>
+    // === Clear button ===
+    clearCodeButton.addEventListener("click", function () {
+      codeInput.value = "";
+      analysisResult.textContent = "Analysis result will appear here.";
+      codeStats.textContent = "Characters: 0 | Lines: 0";
+    });
+  </script>
 </body>
 </html>
