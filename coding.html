@@ -161,7 +161,19 @@
       <label for="codeInput"><strong>Paste your code here:</strong></label>
       <textarea id="codeInput" placeholder="Paste HTML, CSS, JavaScript, or any code snippet here..."></textarea>
 
-      <p id="codeStats" class="lead">Characters: 0 | Lines: 0</p>
+     <p id="codeStats" class="lead">Characters: 0 | Lines: 0</p>
+
+      <div style="margin: 12px 0; text-align: left;">
+        <label for="languageSelect"><strong>Language:</strong></label>
+        <select id="languageSelect" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #cfd8ea; font-size: 0.95rem; margin-left: 8px;">
+          <option value="auto">Auto-detect</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
 
       <button id="analyzeButton" type="button">Analyze Code</button>
       <button id="clearCodeButton" type="button">Clear</button>
@@ -190,12 +202,13 @@
     const codingConnection = document.getElementById("codingConnection");
     const toggleCodingModeButton = document.getElementById("toggleCodingModeButton");
     const clearCodeButton = document.getElementById("clearCodeButton");
+    const languageSelect = document.getElementById("languageSelect");
 
     // === State ===
     let USE_LOCAL_BACKEND = false;
     let isCodingBackendReady = false;
 
-    const CODING_SYSTEM_PROMPT = "You are the coding assistant of the Local AI Platform. Analyze code clearly, explain problems, suggest practical fixes, and keep answers direct.";
+    const CODING_SYSTEM_PROMPT = "You are the coding assistant of the Local AI Platform. When you analyze code, structure your response in three clear sections:\n\n1. **Issues found** (bugs, errors, anti-patterns)\n2. **Suggestions** (concrete improvements with examples)\n3. **Brief explanation** (what the code does, in 2-3 lines)\n\nBe direct, practical, and avoid unnecessary preambles.";
 
     // === UI refresh ===
     function refreshCodingModeUI() {
@@ -203,7 +216,16 @@
       codingModel.textContent = "Model: " + SharedSettings.getModel();
       toggleCodingModeButton.textContent = USE_LOCAL_BACKEND ? "Switch to Demo" : "Switch to Local";
     }
+// === Restore language selection ===
+    const savedLanguage = localStorage.getItem("codingAssistantLanguage");
+    if (savedLanguage) languageSelect.value = savedLanguage;
 
+    languageSelect.addEventListener("change", function () {
+      localStorage.setItem("codingAssistantLanguage", languageSelect.value);
+    });
+
+    // === Initialize from SharedSettings ===
+    USE_LOCAL_BACKEND = SharedSettings.isLocal();
     // === Initialize from SharedSettings ===
     USE_LOCAL_BACKEND = SharedSettings.isLocal();
     if (SharedSettings.isFileProtocol()) {
@@ -240,8 +262,21 @@
         codingConnection.textContent = "Connection: Available (but " + result.selectedModel + " not found)";
       }
     }
+// === Build user prompt with language context ===
+    function buildUserPrompt(code, language) {
+      const languageLabel = {
+        "auto": "this code (detect the language yourself)",
+        "html": "this HTML code",
+        "css": "this CSS code",
+        "javascript": "this JavaScript code",
+        "python": "this Python code",
+        "other": "this code"
+      }[language] || "this code";
 
-    // === Get analysis ===
+      return `Analyze ${languageLabel} following the 3-section format (Issues / Suggestions / Brief explanation):\n\n${code}`;
+    }
+
+       // === Get analysis ===
     async function getCodingAnalysis(code) {
       if (USE_LOCAL_BACKEND) {
         const response = await fetch(SharedSettings.LOCAL_BACKEND_URL, {
@@ -258,7 +293,7 @@
               },
               {
                 role: "user",
-                content: "Analyze this code and give clear practical feedback:\n\n" + code
+                content: buildUserPrompt(code, languageSelect.value)
               }
             ],
             stream: false
