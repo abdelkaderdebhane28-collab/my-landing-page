@@ -11,7 +11,7 @@ const SharedSettings = (function () {
   const KEY_MODE  = "localAiMode";  // "demo" or "local"
 
   // ----- Defaults -----
-  const DEFAULT_MODEL = "gemma3:latest";
+ const DEFAULT_MODEL = "qwen-turbo:latest";
   const DEFAULT_MODE  = "demo";
 
   // ----- Backend URLs -----
@@ -20,6 +20,12 @@ const SharedSettings = (function () {
 
   // ----- Available models (shown in dropdowns) -----
   const AVAILABLE_MODELS = [
+    "qwen-turbo:latest",
+    "qwen-fast:latest",
+    "coder-turbo:latest",
+    "qwen2.5:32b",
+    "qwen2.5-coder:32b",
+    "llama3.2-vision:11b",
     "gemma3:latest",
     "devstral:latest"
   ];
