@@ -31,14 +31,53 @@ const SharedSettings = (function () {
   ];
 
   // ----- Get / Set Model -----
-  function getModel() {
-    return localStorage.getItem(KEY_MODEL) || DEFAULT_MODEL;
-  }
+  // ----- Per-page recommended models -----
+const PAGE_RECOMMENDED_MODELS = {
+  "chat":    "qwen-turbo:latest",
+  "coding":  "coder-turbo:latest",
+  "file":    "qwen-turbo:latest",
+  "project": "qwen-fast:latest"
+};
 
-  function setModel(modelName) {
-    if (!modelName) return;
-    localStorage.setItem(KEY_MODEL, modelName);
+// Detect current page from URL
+function getCurrentPage() {
+  const path = window.location.pathname.toLowerCase();
+  if (path.includes("chat"))    return "chat";
+  if (path.includes("coding"))  return "coding";
+  if (path.includes("file"))    return "file";
+  if (path.includes("project")) return "project";
+  return null;
+}
+
+function getModel() {
+  // 1. Check if user manually selected a model for this page
+  const page = getCurrentPage();
+  if (page) {
+    const pageKey = KEY_MODEL + "_" + page;
+    const pageModel = localStorage.getItem(pageKey);
+    if (pageModel) return pageModel;
   }
+  // 2. Fall back to global manual selection
+  const globalModel = localStorage.getItem(KEY_MODEL);
+  if (globalModel) return globalModel;
+  // 3. Fall back to recommended for this page
+  if (page && PAGE_RECOMMENDED_MODELS[page]) {
+    return PAGE_RECOMMENDED_MODELS[page];
+  }
+  // 4. Final fallback
+  return DEFAULT_MODEL;
+}
+
+function setModel(modelName) {
+  if (!modelName) return;
+  // Save per-page (so each page remembers its choice)
+  const page = getCurrentPage();
+  if (page) {
+    localStorage.setItem(KEY_MODEL + "_" + page, modelName);
+  }
+  // Also save globally as fallback
+  localStorage.setItem(KEY_MODEL, modelName);
+}
 
   // ----- Get / Set Mode -----
   function getMode() {
